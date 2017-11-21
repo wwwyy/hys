@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.8/lib/theme-default/index.css">
+    <style media="screen">
+        body {
+            margin: 0;
+        }
+
+        .bg {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            background: url("../img/banner4.jpg") no-repeat 0px -2px;
+            background-size: 101% 700px;
+        }
+
+        .choose_box {
+            position: absolute;
+            width: 600px;
+            height: 120px;
+            background: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-250px) translateX(-80px);
+            border-radius: 10px;
+        }
+
+        .demo-table-expand {
+            font-size: 0;
+        }
+
+        .demo-table-expand label {
+            width: 90px;
+            color: #99a9bf;
+        }
+
+        .demo-table-expand .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 50%;
+        }
+        .box {
+            display: none;
+        }
+        .box1 {
+            display: block;
+        }
+        .transition-box {
+    margin-bottom: 4px;
+    /*width: 200px;*/
+    /*height: 100px;*/
+    border-radius: 4px;
+    background-color: #FF4949;
+    text-align: center;
+    color: #fff;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    margin-right: 20px;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  .clearfix:after {
+      clear: both
+  }
+
+  .box-card {
+     /*display: inline-block;*/
+    /*width: 520px;*/
+  }
+  .el-pager li {
+      min-width: 36px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 14px;
+  }
+  .el-pagination button, .el-pagination span {
+      min-width: 36px;
+      height: 36px;
+      line-height: 36px;
+  }
+  .el-pagination__total {
+      line-height: 36px;
+      font-size: 14px;
+  }
+  .el-pagination {
+      text-align: center;
+  }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="2">国内机票</el-menu-item>
+            <el-menu-item index="3">首页酒店</el-menu-item>
+            <el-menu-item index="4" @click="backhome">全流程服务</el-menu-item>
+            <el-menu-item index="5">关于我们</el-menu-item>
+            <el-menu-item index="5">联系我们</el-menu-item>
+        </el-menu>
+        <div class="bg">
+            <el-col :span="4">
+                <el-menu default-active="4" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="light">
+                    <el-menu-item index="1" @click="show(1)">全流程出行计划列表(用户)</el-menu-item>
+                    <el-menu-item index="2" @click="show(2)">全流程计划模板设置(客服)</el-menu-item>
+                    <el-menu-item index="3" @click="show(3)">全流程计划监控</el-menu-item>
+                    <el-menu-item index="4" @click="show(4)">全流程出行计划列表(客服)</el-menu-item>
+                    <el-menu-item index="5" @click="show(5)">定制出行计划(客服)</el-menu-item>
+                </el-menu>
+            </el-col>
+            <el-col :span="20" >
+                <template>
+                    <el-card class="box-card" style="display:none;">
+  <div slot="header" class="clearfix">
+    <span style="line-height: 36px;">出行计划详情</span>
+    <el-button style="float: right;" type="primary" @click="show1 = !show1">全流程节点展示</el-button>
+  </div>
+  <div style="margin-top: 20px;">
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">姓名:<span style="padding-left:20px;">{{ name }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">活动名称:<span style="padding-left:20px;">{{ eventName }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">活动性质:<span style="padding-left:20px;">{{ type }}</span></i></div></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">负责人:<span style="padding-left:20px;">{{ resp }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">联系电话:<span style="padding-left:20px;">{{ phone }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">特殊事项:<span style="padding-left:20px;">{{ dynamicTags }}</span></i></div></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">出发日期:<span style="padding-left:20px;">{{ arrDate }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">返回时间:<span style="padding-left:20px;">{{ depDate }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">备注:<span style="padding-left:20px;">{{ desc }}</span></i></div></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="24"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">行程:<span style="padding-left:20px;">{{ journey }}</span></i></div></el-col>
+      </el-row>
+      <el-collapse-transition>
+        <div v-show="show1" style="margin-top:30px;">
+          <div class="transition-box" style="padding:10px;margin-bottom:10px">全流程节点展示</div>
+          <div class="transition-box" style="padding:20px;background:#ef5350">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                   <el-col :span="4"><div></div></el-col>
+                  <el-col :span="5"><div>流程节点</div></el-col>
+                  <el-col :span="5"><div>负责人</div></el-col>
+                  <el-col :span="5"><div>联系方式</div></el-col>
+                  <el-col :span="5"><div>短信模板</div></el-col>
+            </el-row>
+          </div>
+          <div class="transition-box" style="padding:20px;background:#f44336">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="4"><div>1.</div></el-col>
+                  <el-col :span="5"><div>机票预订</div></el-col>
+                  <el-col :span="5"><div>邹倩</div></el-col>
+                  <el-col :span="5"><div>18888888888</div></el-col>
+                  <el-col :span="5"><div>****机票已取,已完成预定</div></el-col>
+            </el-row>
+          </div>
+          <div class="transition-box" style="padding:20px;background:#e53935">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="4"><div>2.</div></el-col>
+                  <el-col :span="5"><div>本地机场送机</div></el-col>
+                  <el-col :span="5"><div>孙俪</div></el-col>
+                  <el-col :span="5"><div>18666666666</div></el-col>
+                  <el-col :span="5"><div>****已登机,航班按时起飞</div></el-col>
+            </el-row>
+          </div>
+          <div class="transition-box" style="padding:20px;background:#d32f2f">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="4"><div>3.</div></el-col>
+                  <el-col :span="5"><div>异地机场接机</div></el-col>
+                  <el-col :span="5"><div>曾系</div></el-col>
+                  <el-col :span="5"><div>18777777777</div></el-col>
+                  <el-col :span="5"><div>****航班按时降落,已接机</div></el-col>
+            </el-row>
+          </div>
+          <div class="transition-box" style="padding:20px;background:#c62828">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="4"><div>4.</div></el-col>
+                  <el-col :span="5"><div>酒店入住</div></el-col>
+                  <el-col :span="5"><div>张飞</div></el-col>
+                  <el-col :span="5"><div>18555555555</div></el-col>
+                  <el-col :span="5"><div>****已办理酒店入住</div></el-col>
+            </el-row>
+          </div>
+          <div class="transition-box" style="padding:20px;background:#b71c1c">
+              <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="4"><div>5.</div></el-col>
+                  <el-col :span="5"><div>商务活动</div></el-col>
+                  <el-col :span="5"><div>刘备</div></el-col>
+                  <el-col :span="5"><div>18999999999</div></el-col>
+                  <el-col :span="5"><div>已预订商务活动场地</div></el-col>
+            </el-row>
+          </div>
+        </div>
+      </el-collapse-transition>
+    </div>
+</el-card>
+<el-input placeholder="请输入关键字" icon="search" v-model="keyword" style="width: 300px">
+</el-input>
+<el-button @click="search">查询</el-button>
+             <el-table :data="dataShow" border style="width: 100%" class="box box1" columns="showColumns">
+    <el-table-column label="计划编号" width="180">
+      <template scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.orderNo }}</span>
+      </template>
+                </el-table-column>
+                <el-table-column label="姓名" width="180">
+                    <template scope="scope">
+        <span style="margin-left: 10px">{{name }}</span>
+      </template>
+                </el-table-column>
+                <el-table-column label="出行人数" width="180">
+                    <template scope="scope">
+        <span style="margin-left: 10px">{{ dynamicTagsLength+1 }}</span>
+      </template>
+                </el-table-column>
+                <el-table-column label="行程" width="180">
+                    <template scope="scope">
+        <span style="margin-left: 10px">{{ journey}}</span>
+      </template>
+                </el-table-column>
+                <el-table-column label="状态" width="180">
+                    <template scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.state }}</span>
+      </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template scope="scope">
+        <!-- <el-button size="mini" @click="details">计划详情</el-button> -->
+        <el-button size="mini" @click="inputting">查看出行计划</el-button>
+        <!-- <el-button size="mini" @click="mod">修改出行计划</el-button> -->
+        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">作废</el-button>
+      </template>
+                </el-table-column>
+                </el-table>
+                <div style="background:#fff;height:60px;padding-top:15px;"><el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage1" :page-size="100" layout="total, prev, pager, next" :total="1000">
+    </el-pagination></div>
+                <el-table :data="tableData2" border style="width: 100%" class="box box3">
+                    <el-table-column label="计划编号" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.orderNo }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="姓名" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.name }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="出行人数" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.number }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="行程" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.stroke }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.state }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template scope="scope">
+<el-button size="small" @click="step">全流程监控</el-button>
+</template>
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableData3" border style="width: 100%" class="box box4">
+                    <el-table-column label="编号" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.orderNo }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="姓名" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.name }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="创建人" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.founder }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="创建时间" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.date }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.state }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template scope="scope">
+<el-button size="small" @click="handleEdit(scope.$index, scope.row)">浏览</el-button>
+<el-button size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+</template>
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableData4" border style="width: 100%" class="box box5">
+                    <el-table-column label="编号" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.orderNo }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="通知人姓名" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.name }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="手机号" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.phoneNumb }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="邮箱" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.email }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="创建时间" width="180">
+                        <template scope="scope">
+<span style="margin-left: 10px">{{ scope.row.date }}</span>
+</template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template scope="scope">
+<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+</template>
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableData5" style="width: 100%" class="box box2">
+                    <el-table-column type="expand">
+                        <template scope="props">
+                 <el-form label-position="left" inline class="demo-table-expand">
+                   <el-form-item label="日期">
+                     <span>{{ props.row.date }}</span>
+                   </el-form-item>
+                   <el-form-item label="城市">
+                     <span>{{ props.row.city }}</span>
+                   </el-form-item>
+                   <el-form-item label="流程节点">
+                     <span>{{ props.row.node }}</span>
+                   </el-form-item>
+                   <el-form-item label="责任人">
+                     <span>{{ props.row.resp }}</span>
+                   </el-form-item>
+                   <el-form-item label="联系方式">
+                     <span>{{ props.row.call }}</span>
+                   </el-form-item>
+                   <el-form-item label="短信">
+                     <span>{{ props.row.message }}</span>
+                   </el-form-item>
+                   <el-form-item label="备注">
+                     <span>{{ props.row.ps }}</span>
+                   </el-form-item>
+                 </el-form>
+               </template>
+                    </el-table-column>
+                    <el-table-column label="日期" prop="date">
+                    </el-table-column>
+                    <el-table-column label="城市" prop="city">
+                    </el-table-column>
+                    <el-table-column label="流程节点" prop="node">
+                    </el-table-column>
+                    <el-table-column label="责任人" prop="resp">
+                    </el-table-column>
+                    <el-table-column label="联系方式" prop="call">
+                    </el-table-column>
+                    <el-table-column label="短信" prop="message" min-width='140'>
+                    </el-table-column>
+                    <el-table-column label="备注" prop="ps" min-width='140'>
+                    </el-table-column>
+                    <el-table-column>
+                        <template scope="scope">
+                   <el-button size="small">编辑</el-button>
+                 </template>
+                    </el-table-column>
+                </el-table>
+                </template>
+            </el-col>
+        </div>
+    </div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui@1.4.8/lib/index.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js">
+</script>
+<script>
+    var formData = JSON.parse(localStorage.form);
+    console.log(formData);
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+							keyword:'',
+								input2: '',
+								dataShow:[{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                tableData2: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                name: formData.name,
+                arrDate:formData.date[0].substring(0,10) ,
+                depDate:formData.date[1].substring(0,10),
+                desc:formData.desc,
+                eventName:formData.eventName,
+                phone:formData.phone,
+                resource:formData.resource,
+                resp:formData.resp,
+                type:formData.type.join("、"),
+                dynamicTags:formData.dynamicTags.join("、"),
+                journey:formData.journey,
+                dynamicTagsLength:formData.dynamicTags.length,
+                show1: false,
+                show2: false,
+                show3: false,
+                show4: false,
+                show5: false,
+                tableData5: [{
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }],
+                tableData1: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                tableData2: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                tableData3: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date:'2017-10-01'
+                }],
+                tableData4: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date:'2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date:'2017-10-01'
+                }]
+            }
+        },
+        methods: {
+            handleDelete(index, row) {
+        this.$prompt('请输入作废原因', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        //   type: 'warning'
+        }).then(() => {
+          this.dataShow.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            show(index) {
+                switch(index)
+                    {
+                    case 1:
+                    window.location.href="itinerary.html"
+                    break;
+                    case 2:
+                    window.location.href="modification.html"
+                    break;
+                    case 3:
+                    window.location.href="steps.html"
+                    break;
+                    case 4:
+                    window.location.href="list_s.html"
+                    break;
+                    case 5:
+                        window.location.href = "traveler.html"
+                        break;
+                    default:
+                    }
+            },
+            details(){
+                window.location.href="particulars.html"
+            },
+inputting(){
+    window.location.href="inputting_s.html"
+},
+mod(){
+    window.location.href="modification.html"
+},
+step(){
+    window.location.href="step.html"
+},
+backhome(){
+    window.location.href="index.html"
+},
+search() {
+	// console.log(this.dataShow);
+        let that = this
+				// console.log(that.keyword);
+				that.dataShow = this.tableData1
+        let tempData = this.dataShow
+        that.dataShow = []
+        tempData.forEach(function (elem) {
+          for (let i in elem) {
+						console.log(tempData,elem[i]);
+            if (elem[i].toString().indexOf(that.keyword) > -1) {
+              that.dataShow.push(elem)
+              return
+            }
+          }
+        })
+      },
+			computed: {
+
+	      showColumns: function () {
+	        let showColumn = this.columns.slice()
+	        showColumn.forEach(function (elem) {
+	          elem.sortable = true
+	        })
+	        if (this.type === 'edit') {
+	          showColumn.unshift({
+	            type: 'selection',
+	            width: 60,
+	            align: 'center'
+	          })
+	          showColumn.push({
+	            title: '操作',
+	            key: 'action',
+	            width: 150,
+	            align: 'center',
+	            render: this.renderOperate
+	          })
+	        }
+	        return showColumn
+	      }
+	    },
+	mounted: function () {
+		this.dataShow = this.tableData1
+	}
+        },
+
+    })
+  
+</script>
+
+</html>

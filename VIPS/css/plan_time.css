@@ -1,0 +1,192 @@
+@charset "UTF-8";
+* {
+  font-family: 微軟正黑體 !important;
+}
+
+/*html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #A9D5DE;
+}*/
+
+#time {
+	width: 100%;
+  /*height: 100%;*/
+	/*min-width:100px;*/
+	height: auto;
+	max-height: 100vh;
+	padding: 10vh 0;
+	position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+	/*overflow: hidden;*/
+  background-color: #20A0FF;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+					color: #000;
+}
+
+#time .timeline {
+  width: 5px;
+  height: auto;
+	/*margin-top: 50vh;*/
+  padding-top: 10vh;
+  background-color: rgba(255, 255, 255, 0.4);
+	/*transform: scale(.4);*/
+}
+
+#time .dialog_wrapper {
+  height: 100px;
+  position: relative;
+}
+#time .dialog_wrapper:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  -webkit-transform: translateX(-40%);
+          transform: translateX(-40%);
+}
+#time .dialog_wrapper:nth-child(2n+1) .dialog {
+  left: 40px;
+}
+#time .dialog_wrapper:nth-child(2n+1) .dialog:before {
+  left: -8px;
+}
+#time .dialog_wrapper:nth-child(2n) .dialog {
+  left: initial;
+  right: 40px;
+}
+
+#time .dialog {
+  width: 120px;
+  background-color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 12px 12px #5398A6;
+  margin-bottom: 50px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: -10px;
+}
+#time .dialog:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 3px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  position: absolute;
+  right: -8px;
+}
+#time .dialog:hover {
+  -webkit-transform: translate(-10px, -10px);
+          transform: translate(-10px, -10px);
+  box-shadow: 20px 20px #5398A6;
+}
+#time .dialog .year {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+#time @-webkit-keyframes rain_in {
+  0% {
+    -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+}
+#time @keyframes rain_in {
+  0% {
+    -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+}
+#time .dialog .year .decor_bar, .dialog .year .decor_bar:before, .dialog .year .decor_bar:after {
+  content: "";
+  width: 8px;
+  height: 30px;
+  background-color: #F4DF38;
+  border-radius: 5px;
+  position: absolute;
+  top: -35px;
+  left: 30px;
+  -webkit-animation: rain_in 0.5s 0.5s both;
+          animation: rain_in 0.5s 0.5s both;
+}
+#time .dialog .year .decor_bar:before {
+  background-color: #F4A373;
+  top: -40px;
+  left: -20px;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+}
+#time .dialog .year .decor_bar:after {
+  background-color: #fff;
+  top: -60px;
+  left: 20px;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+}
+#time .dialog .brief {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 24px;
+}
+
+#time .initial {
+	position: absolute;
+  font-size: 16px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  /*position: fixed;*/
+  top: 50px;
+  right: 50px;
+  color: #fff;
+  background-color: rgba(83, 152, 166, 0.6);
+  border: 1px solid #5398A6;
+  cursor: pointer;
+}
+
+#time .fade-enter-active, .fade-leave-active {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+
+#time .fade-enter, .fade-leave-to {
+  opacity: 1;
+  /*-webkit-transform: translateY(50px) rotate(15deg);
+          transform: translateY(50px) rotate(15deg);*/
+}

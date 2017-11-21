@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.8/lib/theme-default/index.css">
+	<style media="screen">
+		body {
+			margin: 0;
+		}
+
+		.bg {
+			position: relative;
+			width: 100%;
+			height: 700px;
+			background: url("../img/banner4.jpg") no-repeat 0px -2px;
+			background-size: 101% 700px;
+		}
+
+		.choose_box {
+			position: absolute;
+			width: 600px;
+			height: 120px;
+			background: #fff;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-250px) translateX(-80px);
+			border-radius: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+
+		<!--  头部导航  -->
+
+		<el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+			<el-menu-item index="1">首页</el-menu-item>
+			<el-menu-item index="2">国内机票</el-menu-item>
+			<el-menu-item index="3">首页酒店</el-menu-item>
+			<el-menu-item index="4" @click="backhome">全流程服务</el-menu-item>
+			<el-menu-item index="5">关于我们</el-menu-item>
+			<el-menu-item index="6">联系我们</el-menu-item>
+		</el-menu>
+		<!--  头部导航  -->
+
+		<!--  内容区  -->
+
+		<div class="bg">
+			<!--  选择操作  -->
+			<div class="choose_box">
+				<div class="block">
+					<span class="wrapper" style="padding:0 0 0 10%">
+                <el-button type="success"style="width:25%;margin-top:40px" @click="dialogVisible = true">制定出行计划</el-button>
+                <!-- <el-button type="warning"style="width:25%;margin-top:40px" @click="dialogFormVisible = true">添加出行人信息</el-button> -->
+                <el-button type="info"style="width:25%;margin-top:40px" @click="itinerary">查看出行列表</el-button>
+              </span>
+				</div>
+			</div>
+			<!--  选择操作  -->
+
+			<!--  出行人弹框  -->
+			<el-dialog title="出行人信息" :visible.sync="dialogFormVisible" size="tiny">
+				<el-form :model="form">
+					<el-form-item label="姓名" :label-width="formLabelWidth">
+						<el-input v-model="form.name" auto-complete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="性别" :label-width="formLabelWidth">
+						<el-select v-model="form.gender" placeholder="请选择性别">
+							<el-option label="男" value="男"></el-option>
+							<el-option label="女" value="女"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="证件类型" :label-width="formLabelWidth">
+						<el-select v-model="form.cardType" placeholder="请选择证件类型">
+							<el-option label="身份证" value="身份证"></el-option>
+							<el-option label="护照" value="护照"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="证件号码" :label-width="formLabelWidth">
+						<el-input v-model="form.cardNo" auto-complete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="备注" :label-width="formLabelWidth">
+						<el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.remark">
+						</el-input>
+					</el-form-item>
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button @click="dialogFormVisible = false">取 消</el-button>
+					<el-button type="primary" @click="save">保存</el-button>
+				</div>
+			</el-dialog>
+			<!--  出行人弹框 -->
+
+			<!--  出行计划弹框  -->
+			<el-dialog title="出行计划" :visible.sync="dialogVisible" size="tiny" :before-close="handleClose">
+				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+					<el-form-item label="出行人" prop="name">
+						<el-autocomplete class="inline-input" v-model="ruleForm.name" :fetch-suggestions="querySearch" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+					</el-form-item>
+					<el-form-item label="活动名称" prop="eventName">
+						<el-input v-model="ruleForm.eventName"></el-input>
+					</el-form-item>
+					<el-form-item label="负责人" prop="resp">
+						<el-input v-model="ruleForm.resp"></el-input>
+					</el-form-item>
+					<el-form-item label="联系电话" prop="phone">
+						<el-input v-model="ruleForm.phone"></el-input>
+					</el-form-item>
+					<el-form-item label="行程" prop="journey">
+						<el-input type="textarea" v-model="ruleForm.journey"></el-input>
+					</el-form-item>
+					<el-form-item label="活动时间">
+						<el-form-item prop="date">
+							<el-date-picker v-model="ruleForm.date" type="daterange" placeholder="选择日期范围" @change='getTime' :picker-options="pickerOptions0">
+						</el-form-item>
+					</el-form-item>
+					<el-form-item label="同行人" prop="associate">
+						<el-tag :key="tag" v-for="tag in dynamicTags" :closable="true" :close-transition="false" @close="handleCloseT(tag)">
+							{{tag}}
+						</el-tag>
+						<el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="mini" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+						</el-input>
+						<el-button v-else class="button-new-tag" size="small" @click="showInput">+ 同行人</el-button>
+					</el-form-item>
+					<el-form-item label="活动备注" prop="desc">
+						<el-input type="textarea" v-model="ruleForm.desc"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+						<el-button @click="resetForm('ruleForm')">重置</el-button>
+					</el-form-item>
+
+				</el-form>
+			</el-dialog>
+			<!--  出行计划弹框  -->
+
+		</div>
+		<!--  头部导航  -->
+	</div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui@1.4.8/lib/index.js"></script>
+<script>
+	var arrTravel = [];
+	new Vue({
+		el: '#app',
+		data: function() {
+			return {
+				pickerOptions0: { //日期选择器
+					disabledDate(time) {
+						return time.getTime() < Date.now() - 8.64e7;
+					}
+				},
+				restaurants: [],
+				state1: '',
+				dynamicTags: ['蝙蝠侠', '超人', '钢铁侠'],
+				inputVisible: false,
+				inputValue: '',
+				visible: false,
+				dialogVisible: false,
+				dialogFormVisible: false,
+				form: {
+					name: '',
+					cardNo: '',
+					gender: '',
+					cardType: '',
+					remark: ''
+				},
+				formLabelWidth: '80px',
+				options: [{
+					value: '选项1',
+					label: '黄金糕'
+				}, {
+					value: '选项2',
+					label: '双皮奶'
+				}, {
+					value: '选项3',
+					label: '蚵仔煎'
+				}, {
+					value: '选项4',
+					label: '龙须面'
+				}, {
+					value: '选项5',
+					label: '北京烤鸭'
+				}],
+				value8: '',
+				ruleForm: {
+					name: '',
+					region: '',
+					resp: '',
+					phone: '',
+					date: '',
+					// date2: '',
+					delivery: false,
+					type: [],
+					resource: '',
+					desc: '',
+					associate: '',
+					journey: ''
+				},
+				rules: {
+					eventName: [{
+							required: true,
+							message: '请输入活动名称',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 5,
+							message: '长度在 3 到 5 个字符',
+							trigger: 'blur'
+						}
+					],
+					resp: [{
+							required: true,
+							message: '请输入负责人姓名',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 5,
+							message: '长度在 3 到 5 个字符',
+							trigger: 'blur'
+						}
+					],
+					phone: [{
+							required: true,
+							message: '请输入联系电话',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 5,
+							message: '长度在 3 到 5 个字符',
+							trigger: 'blur'
+						}
+					],
+					name: [{
+						required: true,
+						message: '请选择出行人姓名',
+						trigger: 'change'
+					}],
+					date: [{
+						type: 'array',
+						required: true,
+						message: '请选择日期',
+						trigger: 'change'
+					}],
+					type: [{
+						type: 'array',
+						required: true,
+						message: '请至少选择一个活动性质',
+						trigger: 'change'
+					}],
+					resource: [{
+						required: true,
+						message: '特殊事项',
+						trigger: 'change'
+					}],
+					desc: [{
+						required: true,
+						message: '活动备注',
+						trigger: 'blur'
+					}],
+					journey: [{
+						required: true,
+						message: '行程',
+						trigger: 'blur'
+					}],
+				},
+			}
+		},
+		methods: {
+			querySearch(queryString, cb) {
+				var restaurants = this.restaurants;
+				var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+				// 调用 callback 返回建议列表的数据
+				cb(results);
+			},
+			createFilter(queryString) {
+				return (restaurant) => {
+					return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
+				};
+			},
+			loadAll() {
+				return [{
+						"value": "赵XX",
+						"address": "长宁区新渔路144号"
+					},
+					{
+						"value": "钱XX",
+						"address": "上海市长宁区淞虹路661号"
+					},
+					{
+						"value": "孙XX",
+						"address": "上海市普陀区真北路988号创邑金沙谷6号楼113"
+					},
+					{
+						"value": "李XX",
+						"address": "天山西路438号"
+					},
+					{
+						"value": "周XX",
+						"address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101"
+					},
+					{
+						"value": "吴XX",
+						"address": "上海市长宁区金钟路633号"
+					},
+					{
+						"value": "郑XX",
+						"address": "上海市嘉定区曹安公路曹安路1685号"
+					},
+					{
+						"value": "王XX",
+						"address": "上海市普陀区同普路1435号"
+					},
+					{
+						"value": "十二泷町",
+						"address": "上海市北翟路1444弄81号B幢-107"
+					},
+					{
+						"value": "星移浓缩咖啡",
+						"address": "上海市嘉定区新郁路817号"
+					},
+					{
+						"value": "阿姨奶茶/豪大大",
+						"address": "嘉定区曹安路1611号"
+					},
+					{
+						"value": "新麦甜四季甜品炸鸡",
+						"address": "嘉定区曹安公路2383弄55号"
+					},
+					{
+						"value": "Monica摩托主题咖啡店",
+						"address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F"
+					},
+					{
+						"value": "浮生若茶（凌空soho店）",
+						"address": "上海长宁区金钟路968号9号楼地下一层"
+					},
+					{
+						"value": "NONO JUICE  鲜榨果汁",
+						"address": "上海市长宁区天山西路119号"
+					},
+					{
+						"value": "CoCo都可(北新泾店）",
+						"address": "上海市长宁区仙霞西路"
+					},
+					{
+						"value": "快乐柠檬（神州智慧店）",
+						"address": "上海市长宁区天山西路567号1层R117号店铺"
+					},
+					{
+						"value": "Merci Paul cafe",
+						"address": "上海市普陀区光复西路丹巴路28弄6号楼819"
+					},
+					{
+						"value": "猫山王（西郊百联店）",
+						"address": "上海市长宁区仙霞西路88号第一层G05-F01-1-306"
+					},
+					{
+						"value": "枪会山",
+						"address": "上海市普陀区棕榈路"
+					},
+					{
+						"value": "纵食",
+						"address": "元丰天山花园(东门) 双流路267号"
+					},
+					{
+						"value": "钱记",
+						"address": "上海市长宁区天山西路"
+					},
+					{
+						"value": "壹杯加",
+						"address": "上海市长宁区通协路"
+					},
+					{
+						"value": "唦哇嘀咖",
+						"address": "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元"
+					},
+					{
+						"value": "爱茜茜里(西郊百联)",
+						"address": "长宁区仙霞西路88号1305室"
+					},
+					{
+						"value": "爱茜茜里(近铁广场)",
+						"address": "上海市普陀区真北路818号近铁城市广场北区地下二楼N-B2-O2-C商铺"
+					},
+					{
+						"value": "鲜果榨汁（金沙江路和美广店）",
+						"address": "普陀区金沙江路2239号金沙和美广场B1-10-6"
+					},
+					{
+						"value": "开心丽果（缤谷店）",
+						"address": "上海市长宁区威宁路天山路341号"
+					},
+					{
+						"value": "超级鸡车（丰庄路店）",
+						"address": "上海市嘉定区丰庄路240号"
+					},
+					{
+						"value": "妙生活果园（北新泾店）",
+						"address": "长宁区新渔路144号"
+					},
+					{
+						"value": "香宜度麻辣香锅",
+						"address": "长宁区淞虹路148号"
+					},
+					{
+						"value": "凡仔汉堡（老真北路店）",
+						"address": "上海市普陀区老真北路160号"
+					},
+					{
+						"value": "港式小铺",
+						"address": "上海市长宁区金钟路968号15楼15-105室"
+					},
+					{
+						"value": "蜀香源麻辣香锅（剑河路店）",
+						"address": "剑河路443-1"
+					},
+					{
+						"value": "北京饺子馆",
+						"address": "长宁区北新泾街道天山西路490-1号"
+					},
+					{
+						"value": "饭典*新简餐（凌空SOHO店）",
+						"address": "上海市长宁区金钟路968号9号楼地下一层9-83室"
+					},
+					{
+						"value": "焦耳·川式快餐（金钟路店）",
+						"address": "上海市金钟路633号地下一层甲部"
+					},
+					{
+						"value": "动力鸡车",
+						"address": "长宁区仙霞西路299弄3号101B"
+					},
+					{
+						"value": "浏阳蒸菜",
+						"address": "天山西路430号"
+					},
+					{
+						"value": "四海游龙（天山西路店）",
+						"address": "上海市长宁区天山西路"
+					},
+					{
+						"value": "樱花食堂（凌空店）",
+						"address": "上海市长宁区金钟路968号15楼15-105室"
+					},
+					{
+						"value": "壹分米客家传统调制米粉(天山店)",
+						"address": "天山西路428号"
+					},
+					{
+						"value": "福荣祥烧腊（平溪路店）",
+						"address": "上海市长宁区协和路福泉路255弄57-73号"
+					},
+					{
+						"value": "速记黄焖鸡米饭",
+						"address": "上海市长宁区北新泾街道金钟路180号1层01号摊位"
+					},
+					{
+						"value": "红辣椒麻辣烫",
+						"address": "上海市长宁区天山西路492号"
+					},
+					{
+						"value": "(小杨生煎)西郊百联餐厅",
+						"address": "长宁区仙霞西路88号百联2楼"
+					},
+					{
+						"value": "阳阳麻辣烫",
+						"address": "天山西路389号"
+					},
+					{
+						"value": "南拳妈妈龙虾盖浇饭",
+						"address": "普陀区金沙江路1699号鑫乐惠美食广场A13"
+					}
+				];
+			},
+			handleSelect(item) {
+				console.log(item);
+			},
+			save() {
+				this.$notify({
+					title: '保存成功',
+					message: '已成功保存出行人信息',
+					type: 'success'
+				});
+				this.dialogFormVisible = false;
+				localStorage.travelerFrom = JSON.stringify(this.form)
+				this.form = {
+					name: '',
+					cardNo: '',
+					gender: '',
+					cardType: '',
+					remark: ''
+				}
+			},
+			handleCloseT(tag) {
+				this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+			},
+
+			showInput() {
+				this.inputVisible = true;
+				this.$nextTick(_ => {
+					this.$refs.saveTagInput.$refs.input.focus();
+				});
+			},
+
+			handleInputConfirm() {
+				let inputValue = this.inputValue;
+				if (inputValue) {
+					this.dynamicTags.push(inputValue);
+				}
+				this.inputVisible = false;
+				this.inputValue = '';
+			},
+			handleClose(done) {
+				this.$confirm('确认关闭？')
+					.then(_ => {
+						done();
+					})
+					.catch(_ => {});
+			},
+			submitForm(formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						this.$confirm('确认创建?')
+							.then(_ => {
+								this.ruleForm.dynamicTags = this.dynamicTags;
+								localStorage.form = JSON.stringify(this.ruleForm);
+								this.dialogVisible = false;
+								window.location.href = "particulars.html";
+							})
+							.catch(_ => {});
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
+			},
+			resetForm(formName) {
+				this.$refs[formName].resetFields();
+			},
+			handleEdit(index, row) {
+				console.log(index, row);
+			},
+			handleDelete(index, row) {
+				console.log(index, row);
+			},
+			itinerary() {
+				window.location.href = "itinerary.html"
+			},
+			backhome() {
+				window.location.href = "index.html"
+			},
+			getTime(date) {
+				this.time = date;
+
+				console.log(this.time);
+			}
+		},
+		mounted() {
+			this.restaurants = this.loadAll();
+		}
+
+	})
+</script>
+
+</html>

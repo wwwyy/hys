@@ -1,0 +1,229 @@
+.search_bo1 li, .search_bo2 li {
+  float: left;
+  width: 23%;
+  margin-right: 2%; }
+  .search_bo1 li span, .search_bo2 li span {
+    float: left;
+    vertical-align: middle;
+    line-height: 32px;
+    font-size: 14px;
+    margin-right: 1em; }
+  .search_bo1 li > div, .search_bo2 li > div {
+    float: right;
+    max-width: 70% !important;
+    vertical-align: middle;
+    line-height: 32px;
+    font-size: 14px; }
+
+.el-select {
+  width: 70%; }
+  .el-select input {
+    font-size: 14px;
+    text-indent: 1em; }
+
+.search_bo2 {
+  margin-top: 30px; }
+
+.search_btn_box {
+  float: left;
+  width: 10%; }
+  .search_btn_box button {
+    margin-top: 32px;
+    background: #ff9000;
+    letter-spacing: 4px;
+    padding-left: 30px;
+    padding-right: 30px; }
+
+.search_input {
+  float: left;
+  width: 85%;
+  margin-left: 30px; }
+
+#info_btn {
+  margin-top: 50px; }
+
+#info_table {
+  margin-top: 20px;
+  text-align: center; }
+  #info_table > div {
+    border: 2px solid #ccc; }
+
+#page {
+  text-align: center; }
+
+.orders_list {
+  width: 100%;
+  padding: 0 30px;
+  box-sizing: border-box; }
+  .orders_list > li {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 10px 0; }
+    .orders_list > li .order_left {
+      position: relative;
+      float: left;
+      width: 25%;
+      text-indent: 2em;
+      border-right: 1px solid #ccc; }
+      .orders_list > li .order_left p {
+        line-height: 26px;
+        font-size: 14px;
+        color: #333; }
+        .orders_list > li .order_left p strong {
+          line-height: 26px; }
+
+.circle:nth-of-type(1) {
+  position: absolute;
+  top: -11px;
+  right: -11px;
+  width: 20px;
+  height: 10px;
+  border-radius: 0 0 10px 10px;
+  border: 1px solid #ccc;
+  border-top: none;
+  background: #fff;
+  z-index: 999; }
+
+.circle:nth-of-type(2) {
+  position: absolute;
+  top: 10px;
+  right: -11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 999; }
+
+.circle:nth-of-type(3) {
+  position: absolute;
+  top: 40px;
+  right: -11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 999; }
+
+.circle:nth-of-type(4) {
+  position: absolute;
+  top: 70px;
+  right: -11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 999; }
+
+.circle:nth-of-type(5) {
+  position: absolute;
+  top: 104px;
+  right: -11px;
+  width: 20px;
+  height: 10px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: #fff;
+  z-index: 999; }
+
+.train_info {
+  position: relative;
+  float: left;
+  width: 60%;
+  border-right: 1px solid #ccc; }
+  .train_info .train_info_left {
+    position: relative;
+    float: left;
+    width: 15%;
+    line-height: 104px;
+    font-size: 20px;
+    text-align: center; }
+    .train_info .train_info_left a {
+      position: absolute;
+      bottom: 40px;
+      left: 45%;
+      font-size: 16px;
+      line-height: 16px;
+      color: #bf0000; }
+  .train_info .train_info_mid {
+    width: 55%;
+    float: left;
+    text-align: center; }
+    .train_info .train_info_mid .train_info_dep, .train_info .train_info_mid .train_info_arr {
+      float: left;
+      width: 25%;
+      line-height: 35px;
+      font-size: 16px; }
+    .train_info .train_info_mid .train_info_line {
+      width: 40%;
+      float: left; }
+      .train_info .train_info_mid .train_info_line p {
+        position: relative;
+        height: 35px;
+        text-align: center; }
+        .train_info .train_info_mid .train_info_line p button {
+          margin-top: 5px; }
+        .train_info .train_info_mid .train_info_line p .train_ico {
+          display: block;
+          width: 100px;
+          padding: 0 10px;
+          height: 50px;
+          margin: 0 auto;
+          background: url("../../img/reserve/ico/train.png") no-repeat 10px 0;
+          background-size: 100px 50px;
+          background-color: #fff;
+          z-index: 2; }
+        .train_info .train_info_mid .train_info_line p .train_line {
+          position: absolute;
+          top: 24px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          border-top: 2px dashed #000;
+          z-index: -1; }
+        .train_info .train_info_mid .train_info_line p .train_total_ico {
+          display: inline-block;
+          padding-left: 30px;
+          margin-left: 40px;
+          transform: translateX(-20px);
+          width: 100px;
+          line-height: 50px;
+          font-size: 16px;
+          background: url("../../img/reserve/ico/totaltime.png") no-repeat 5px 12px;
+          background-size: 25px 25px; }
+  .train_info .train_info_right, .train_info .order_state {
+    float: left; }
+    .train_info .train_info_right p, .train_info .order_state p {
+      line-height: 50px;
+      font-size: 24px;
+      text-align: center; }
+    .train_info .train_info_right .train_prcie, .train_info .order_state .train_prcie {
+      color: #ff0000; }
+  .train_info .order_state {
+    width: 15%;
+    margin-left: 20px; }
+    .train_info .order_state p {
+      line-height: 100px;
+      color: #409EFF;
+      text-align: center; }
+
+.order_right {
+  float: left;
+  width: 14%;
+  text-align: center; }
+  .order_right button {
+    margin-top: 35px;
+    background: #ff9000;
+    border-radius: 5px; }
+
+.station {
+  display: block;
+  line-height: 30px;
+  font-size: 14px; }
+
+/*# sourceMappingURL=service_deal.css.map */

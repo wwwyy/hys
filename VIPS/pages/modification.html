@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.8/lib/theme-default/index.css">
+	<style media="screen">
+		body {
+			margin: 0;
+		}
+
+		.bg {
+			position: relative;
+			width: 100%;
+			height: 700px;
+			background: url("../img/banner4.jpg") no-repeat 0px -2px;
+			background-size: 101% 700px;
+		}
+
+		.choose_box {
+			position: absolute;
+			width: 600px;
+			height: 120px;
+			background: #fff;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-250px) translateX(-80px);
+			border-radius: 10px;
+		}
+
+		.demo-table-expand {
+			font-size: 0;
+		}
+
+		.demo-table-expand label {
+			width: 120px;
+			color: #99a9bf;
+		}
+
+		.demo-table-expand .el-form-item {
+			margin-right: 0;
+			margin-bottom: 0;
+			width: 50%;
+		}
+
+		.box {
+			display: none;
+		}
+
+		.grid-content {
+			line-height: 32px;
+		}
+
+		.box-card-details {
+			display: none;
+		}
+
+		.box-card_mod {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+			<el-menu-item index="1">首页</el-menu-item>
+			<el-menu-item index="2">国内机票</el-menu-item>
+			<el-menu-item index="3">首页酒店</el-menu-item>
+			<el-menu-item index="4" @click="backhome">全流程服务</el-menu-item>
+			<el-menu-item index="5">关于我们</el-menu-item>
+			<el-menu-item index="5">联系我们</el-menu-item>
+		</el-menu>
+		<div class="bg">
+			<el-col :span="4">
+				<el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="light">
+					<el-menu-item index="1" @click="show(1)">全流程出行计划列表(用户)</el-menu-item>
+					<el-menu-item index="2" @click="show(2)">全流程计划模板设置(客服)</el-menu-item>
+					<el-menu-item index="3" @click="show(3)">全流程计划监控</el-menu-item>
+					<el-menu-item index="4" @click="show(4)">全流程出行计划列表(客服)</el-menu-item>
+					<el-menu-item index="5" @click="show(5)">定制出行计划(客服)</el-menu-item>
+				</el-menu>
+			</el-col>
+			<el-col :span="20">
+
+				<template>
+                          <el-table
+                            :data="tableData"
+                            style="width: 100%">
+                            <el-table-column type="expand">
+                              <template scope="props">
+                                <el-form label-position="left" inline class="demo-table-expand">
+                                  <el-form-item label="服务时间">
+    <el-switch
+      v-model="props.row.value1"
+      on-color="#13ce66"
+      off-color="#ff4949"
+      on-value="100"
+      off-value="0">
+    </el-switch>
+                                  </el-form-item>
+                                  <el-form-item label="服务时间范围">
+    <el-switch
+      v-model="props.row.value2"
+      on-color="#13ce66"
+      off-color="#ff4949"
+      on-value="100"
+      off-value="0">
+    </el-switch>
+                                  </el-form-item>
+
+                                  <el-form-item label="备注">
+    <el-switch
+      v-model="props.row.value5"
+      on-color="#13ce66"
+      off-color="#ff4949"
+      on-value="100"
+      off-value="0">
+    </el-switch>
+                                  </el-form-item>
+                                </el-form>
+                              </template>
+				</el-table-column>
+				<el-table-column label="服务项目" prop="node">
+				</el-table-column>
+
+				<el-table-column>
+					<template scope="scope">
+
+                                  <el-button
+                                    size="small"
+                                    type="danger"
+                                    @click="handleDelete(scope.$index, scope.row)">删除
+                                  </el-button>
+                                </template>
+				</el-table-column>
+				</el-table>
+				<el-button type="primary" @click="add">新增流程节点</el-button>
+				<el-dialog title="新增流程节点" :visible.sync="dialogFormVisible" size="tiny">
+					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+						<el-form-item label="服务项目" :label-width="formLabelWidth" prop="node">
+							<el-input v-model="ruleForm.service" auto-complete="off"></el-input>
+						</el-form-item>
+
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="cancel">取 消</el-button>
+						<el-button type="primary" @click="update('ruleForm')">确 定</el-button>
+					</div>
+				</el-dialog>
+				</template>
+
+		</div>
+	</div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui@1.4.8/lib/index.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js">
+</script>
+<script>
+	new Vue({
+		el: '#app',
+		data: function() {
+			return {
+				visible: false,
+				dialogVisible: false,
+				dialogFormVisible: false,
+				ruleForm: {
+
+				},
+				formLabelWidth: '120px',
+				tableData: [{
+					node: '送机服务',
+					resp: '邹倩',
+					call: '18888888888',
+					message: '****机票已取,已完成预定',
+					ps: '加急处理',
+					value1: '100',
+					value2: '100',
+					value3: '100',
+					value4: '0',
+					value5: '0'
+				}, {
+					node: '接机服务',
+					resp: '孙俪',
+					call: '18666666666',
+					message: '****已登机,航班按时起飞',
+					ps: '加急处理',
+					value1: '100',
+					value2: '100',
+					value3: '0',
+					value4: '100',
+					value5: '100'
+				}, {
+					node: '贵宾室服务',
+					resp: '曾系',
+					call: '18777777777',
+					message: '****航班按时降落,已接机',
+					ps: '加急处理',
+					value1: '100',
+					value2: '100',
+					value3: '100',
+					value4: '100',
+					value5: '100'
+				}, {
+					node: 'CIP服务',
+					resp: '张飞',
+					call: '18888888888',
+					message: '****已办理酒店入住',
+					ps: '加急处理',
+					value1: '100',
+					value2: '100',
+					value3: '100',
+					value4: '100',
+					value5: '100'
+				}, {
+					node: '租车服务',
+					resp: '刘备',
+					call: '18999999999',
+					message: '已预订商务活动场地',
+					ps: '加急处理',
+					value1: '100',
+					value2: '100',
+					value3: '100',
+					value4: '100',
+					value5: '100'
+				}],
+				rules: {
+					node: [{
+							required: true,
+							message: '请输入节点名称',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 8,
+							message: '长度在 3 到 8 个字',
+							trigger: 'blur'
+						}
+					],
+					resp: [{
+							required: true,
+							message: '请输入负责人姓名',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 5,
+							message: '长度在 3 到 5 个字符',
+							trigger: 'blur'
+						}
+					],
+					call: [{
+							required: true,
+							message: '请输入联系电话',
+							trigger: 'blur'
+						},
+						{
+							min: 8,
+							max: 11,
+							message: '长度在 8 到 11 个字符',
+							trigger: 'blur'
+						}
+					],
+					message: [{
+						required: true,
+						message: '请输入短信模版',
+						trigger: 'blur'
+					}]
+				},
+			}
+		},
+		methods: {
+			handleDelete(index, row) {
+				this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.tableData.splice(index, 1)
+					this.$message({
+						type: 'success',
+						message: '删除成功!'
+					})
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					})
+				})
+			},
+			add() {
+				this.ruleForm = {
+					date: '',
+					city: '',
+					node: '',
+					resp: '',
+					call: '',
+					message: '',
+					ps: ''
+				}
+				this.dialogFormVisible = true
+			},
+			cancel() {
+				this.dialogFormVisible = false
+			},
+			update(formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						this.tableData.push(this.ruleForm);
+						this.dialogFormVisible = false;
+						resetForm(formName);
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
+			},
+			handleEdit(index, row) {
+				this.ruleForm = this.tableData[index]
+				this.currentIndex = index
+				this.dialogFormVisible = true
+			},
+			handleClose(done) {
+				this.$confirm('确认关闭？')
+					.then(_ => {
+						done();
+					})
+					.catch(_ => {});
+			},
+			submitForm(formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						this.$confirm('确认创建?')
+							.then(_ => {
+								this.dialogVisible = false;
+								window.location.href = "itinerary.html";
+							})
+							.catch(_ => {});
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
+			},
+			resetForm(formName) {
+				this.$refs[formName].resetFields();
+			},
+			handleOpen(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			handleClose(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			show(index) {
+				switch (index) {
+					case 1:
+						window.location.href = "itinerary.html"
+						break;
+					case 2:
+						window.location.href = "modification.html"
+						break;
+					case 3:
+						window.location.href = "steps.html"
+						break;
+					case 4:
+						window.location.href = "costlist.html"
+						break;
+					case 5:
+						window.location.href = "traveler.html"
+						break;
+					default:
+				}
+			},
+			details() {
+				window.location.href = "details.html"
+			},
+			backhome() {
+				window.location.href = "index.html"
+			},
+			inputting() {
+				window.location.href = "inputting.html"
+			},
+			mod() {
+				window.location.href = "modification.html"
+			},
+			step() {
+				window.location.href = "step.html"
+			}
+		},
+
+	})
+</script>
+
+</html>

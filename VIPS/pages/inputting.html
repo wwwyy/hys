@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.8/lib/theme-default/index.css">
+	<style media="screen">
+		body {
+			margin: 0;
+		}
+
+		.bg {
+			position: relative;
+			width: 100%;
+			height: 700px;
+			background: url("../img/banner4.jpg") no-repeat 0px -2px;
+			background-size: 101% 700px;
+		}
+
+		.choose_box {
+			position: absolute;
+			width: 600px;
+			height: 120px;
+			background: #fff;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-250px) translateX(-80px);
+			border-radius: 10px;
+		}
+
+		.demo-table-expand {
+			font-size: 0;
+		}
+
+		.demo-table-expand label {
+			width: 90px;
+			color: #99a9bf;
+		}
+
+		.demo-table-expand .el-form-item {
+			margin-right: 0;
+			margin-bottom: 0;
+			width: 50%;
+		}
+
+		.grid-content {
+			line-height: 32px;
+		}
+
+		.box {
+			display: none;
+		}
+
+		.el-table .cell {
+			text-align: center;
+			font-size: 16px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+			<el-menu-item index="1">首页</el-menu-item>
+			<el-menu-item index="2">国内机票</el-menu-item>
+			<el-menu-item index="3">首页酒店</el-menu-item>
+			<el-menu-item index="4" @click="backhome">全流程服务</el-menu-item>
+			<el-menu-item index="5">关于我们</el-menu-item>
+			<el-menu-item index="5">联系我们</el-menu-item>
+		</el-menu>
+		<div class="bg">
+			<el-col :span="4">
+				<el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="light">
+					<el-menu-item index="1" @click="show(1)">全流程出行计划列表(用户)</el-menu-item>
+					<el-menu-item index="2" @click="show(2)">全流程计划模板设置(客服)</el-menu-item>
+					<el-menu-item index="3" @click="show(3)">全流程计划监控</el-menu-item>
+					<el-menu-item index="4" @click="show(4)">全流程出行计划列表(客服)</el-menu-item>
+					<el-menu-item index="5" @click="show(5)">定制出行计划(客服)</el-menu-item>
+				</el-menu>
+			</el-col>
+			<el-col :span="20">
+				<el-card class="box-card">
+					<div slot="header" class="clearfix">
+						<span style="line-height: 36px;"><strong>全流程定制计划</strong></span>
+						<span style="line-height: 36px;float:right;"><strong style="padding:0 10px">服务管家:诸葛亮</strong><strong style="padding:0 10px">联系电话:18666666666</strong></span>
+					</div>
+
+					<el-card class="box-card">
+						<el-table :data="tableData1" border style="width: 100%">
+							<el-table-column label="行程顺序" width="100">
+								<template scope="scope">
+    <span>{{ scope.row.no }}</span>
+    </template>
+							</el-table-column>
+							<el-table-column label="服务项目">
+								<template scope="scope">
+    <p>{{ scope.row.service}}</p>
+    </template>
+							</el-table-column>
+							<el-table-column label="服务时间">
+								<template scope="scope">
+    <!-- <p style="font-weight:700">{{ scope.row.depAddress}}</p> -->
+    <p style="color:red">{{ scope.row.depDate}}</p>
+    <p style="color:red">{{ scope.row.depTime}}</p>
+    </template>
+							</el-table-column>
+							<el-table-column label="服务地点">
+								<template scope="scope">
+               <p style="font-weight:700">{{ scope.row.arrAddress}}</p>
+
+    </template>
+							</el-table-column>
+							<el-table-column label="服务细节">
+								<template scope="scope">
+    <span>{{ scope.row.service }}</span>
+    </template>
+							</el-table-column>
+							<el-table-column label="备注事项">
+								<template scope="scope">
+    <span>{{ scope.row.remark }}</span>
+    </template>
+							</el-table-column>
+
+						</el-table>
+						<div style="text-align:right;padding:20px;">
+							<strong style="line-height:32px;font-size:22px;margin-right:20px;">费用总计:</strong>
+							<span style="line-height:32px;font-size:22px;margin-right:20px;color:red;font-weight:700">￥ 1866</span>
+							<div style="text-align:center">
+								<el-button type="success" size="lager" style="width:180px;font-size:24px" @click="pay">支付</el-button>
+							</div>
+						</div>
+
+						<el-dialog title="用户信息" :visible.sync="dialogFormVisible" size="tiny">
+							<el-form :model="ruleForm">
+								<el-form-item label="行程顺序" :label-width="formLabelWidth" prop="no">
+									<el-input v-model="ruleForm.no" auto-complete="off"></el-input>
+								</el-form-item>
+								<el-form-item label="行程事项" :label-width="formLabelWidth" prop="depContent">
+									<el-input v-model="ruleForm.depContent" auto-complete="off"></el-input>
+								</el-form-item>
+								<el-form-item label="出发" :label-width="formLabelWidth">
+									<el-input v-model="ruleForm.depAddress" auto-complete="off"></el-input>
+									<el-input v-model="ruleForm.depDate" auto-complete="off"></el-input>
+									<el-input v-model="ruleForm.depTime" auto-complete="off"></el-input>
+								</el-form-item>
+								<el-form-item label="到达" :label-width="formLabelWidth">
+									<el-input v-model="ruleForm.arrAddress" auto-complete="off"></el-input>
+									<el-input v-model="ruleForm.arrDate" auto-complete="off"></el-input>
+									<el-input v-model="ruleForm.arrTime" auto-complete="off"></el-input>
+								</el-form-item>
+								<el-form-item label="当前服务" :label-width="formLabelWidth" prop="service">
+									<el-input v-model="ruleForm.service" auto-complete="off"></el-input>
+								</el-form-item>
+								<el-form-item label="备注事项" :label-width="formLabelWidth" prop="remark">
+									<el-input v-model="ruleForm.remark" auto-complete="off"></el-input>
+								</el-form-item>
+							</el-form>
+							<div slot="footer" class="dialog-footer">
+								<el-button @click="cancel">取 消</el-button>
+								<el-button type="primary" @click="update(),open6()">确 定</el-button>
+							</div>
+						</el-dialog>
+			</el-col>
+		</div>
+	</div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui@1.4.8/lib/index.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js">
+</script>
+<script>
+	var formData = JSON.parse(localStorage.form);
+	new Vue({
+		el: '#app',
+		data: function() {
+			return {
+				dialogFormVisible: false,
+				name: formData.name,
+				arrDate: formData.date[0].substring(0, 10),
+				depDate: formData.date[1].substring(0, 10),
+				desc: formData.desc,
+				eventName: formData.eventName,
+				phone: formData.phone,
+				resource: formData.resource,
+				resp: formData.resp,
+				type: formData.type.join("、"),
+				dynamicTags: formData.dynamicTags.join("、"),
+				journey: formData.journey,
+				dynamicTagsLength: formData.dynamicTags.length,
+				formLabelWidth: '80px',
+				ruleForm: {},
+				tableData5: [{
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}],
+				tableData1: [{
+					no: '行程一',
+					depContent: '接机服务',
+					depAddress: '流亭机场',
+					depDate: '2017-10-18',
+					depTime: '14:00',
+					arrContent: '航班出发',
+					arrAddress: '流亭机场',
+					arrDate: '2017-10-18',
+					arrTime: '14:00',
+					number: '2人',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					service: '贵宾室服务',
+					remark: '无',
+					butler: '诸葛亮',
+					butlerPhone: '18666666666'
+				}, {
+					no: '行程二',
+					depContent: '航班出发',
+					depAddress: '流亭机场',
+					depDate: '2017-10-18',
+					depTime: '14:00',
+					arrContent: '航班出发',
+					arrAddress: '流亭机场',
+					arrDate: '2017-10-18',
+					arrTime: '14:00',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					service: '租车服务',
+					remark: '无',
+					butler: '诸葛亮',
+					butlerPhone: '18666666666'
+				}, {
+					no: '行程三',
+					depContent: '航班出发',
+					depAddress: '流亭机场',
+					depDate: '2017-10-18',
+					depTime: '14:00',
+					arrContent: '航班出发',
+					arrAddress: '流亭机场',
+					arrDate: '2017-10-18',
+					arrTime: '14:00',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					service: '无',
+					remark: '无',
+					butler: '诸葛亮',
+					butlerPhone: '18666666666'
+				}, {
+					no: '行程四',
+					depContent: '航班出发',
+					depAddress: '流亭机场',
+					depDate: '2017-10-18',
+					depTime: '14:00',
+					arrContent: '航班出发',
+					arrAddress: '流亭机场',
+					arrDate: '2017-10-18',
+					arrTime: '14:00',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					service: '无',
+					remark: '无',
+					butler: '诸葛亮',
+					butlerPhone: '18666666666'
+				}],
+				rules: {
+					node: [{
+							required: true,
+							message: '请输入节点名称',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 8,
+							message: '长度在 3 到 8 个字',
+							trigger: 'blur'
+						}
+					],
+					resp: [{
+							required: true,
+							message: '请输入负责人姓名',
+							trigger: 'blur'
+						},
+						{
+							min: 3,
+							max: 5,
+							message: '长度在 3 到 5 个字符',
+							trigger: 'blur'
+						}
+					],
+					call: [{
+							required: true,
+							message: '请输入联系电话',
+							trigger: 'blur'
+						},
+						{
+							min: 8,
+							max: 11,
+							message: '长度在 8 到 11 个字符',
+							trigger: 'blur'
+						}
+					],
+					message: [{
+						required: true,
+						message: '请输入短信模版',
+						trigger: 'blur'
+					}]
+				},
+				tableData2: [{
+					orderNo: '11212121212',
+					name: '王小虎',
+					number: '2人',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					state: '待执行'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					number: '2人',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					state: '待执行'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					number: '2人',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					state: '待执行'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					number: '2人',
+					stroke: '青岛==>北京==>杭州==>上海==>青岛',
+					state: '待执行'
+				}],
+				tableData3: [{
+					orderNo: '11212121212',
+					name: '王小虎',
+					founder: '关羽',
+					state: '待执行',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					founder: '关羽',
+					state: '待执行',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					founder: '关羽',
+					state: '待执行',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					founder: '关羽',
+					state: '待执行',
+					date: '2017-10-01'
+				}],
+				tableData4: [{
+					orderNo: '11212121212',
+					name: '王小虎',
+					phoneNumb: '18888888888',
+					email: '250880088@qq.com',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					phoneNumb: '18888888888',
+					email: '250880088@qq.com',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					phoneNumb: '18888888888',
+					email: '250880088@qq.com',
+					date: '2017-10-01'
+				}, {
+					orderNo: '11212121212',
+					name: '王小虎',
+					phoneNumb: '18888888888',
+					email: '250880088@qq.com',
+					date: '2017-10-01'
+				}],
+				tableData: [{
+					birth: '2016-05-02',
+					name: '王小虎',
+					sex: '男',
+					card: '护照',
+					cardNub: '1234251231212312',
+					indate: '2026-05-02'
+				}, {
+					birth: '2016-05-04',
+					name: '王小虎',
+					sex: '女',
+					card: '护照',
+					cardNub: '1234251231123122',
+					indate: '2026-05-02'
+				}, {
+					birth: '2016-05-01',
+					name: '王小虎',
+					sex: '男',
+					card: '护照',
+					cardNub: '1234251212312312',
+					indate: '2026-05-02'
+				}, {
+					birth: '2016-05-03',
+					name: '王小虎',
+					sex: '女',
+					card: '护照',
+					cardNub: '1234212312512312',
+					indate: '2026-05-02'
+				}],
+				tableData6: [{
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}, {
+					date: '2017-10-02',
+					city: '北京',
+					node: '机票预订',
+					resp: '诸葛亮',
+					call: '18888888888',
+					message: '张首席机票，已完成预订',
+					ps: '蔓越莓蔓越莓蔓越莓'
+				}]
+			}
+		},
+		methods: {
+			pay() {
+				alert('跳转至支付页面')
+			},
+			add() {
+				this.ruleForm = {
+					no: '',
+					depContent: '',
+					depAddress: '',
+					depDate: '',
+					depTime: '',
+					arrContent: '',
+					arrAddress: '',
+					arrDate: '',
+					arrTime: '',
+					stroke: '',
+					service: '',
+					remark: ''
+				}
+				this.tableData1.push(this.ruleForm);
+				this.dialogFormVisible = true
+			},
+			open6() {
+				this.$message({
+					showClose: true,
+					message: '已修改',
+					type: 'success'
+				});
+			},
+			update() {
+				this.dialogFormVisible = false
+			},
+			cancel() {
+				this.dialogFormVisible = false
+			},
+			handleEdit(index, row) {
+				this.ruleForm = row
+				this.currentIndex = index
+				this.dialogFormVisible = true
+			},
+			handleOpen(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			handleClose(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			show(index) {
+				switch (index) {
+					case 1:
+						window.location.href = "itinerary.html"
+						break;
+					case 2:
+						window.location.href = "modification.html"
+						break;
+					case 3:
+						window.location.href = "steps.html"
+						break;
+					case 4:
+						window.location.href = "costlist.html"
+						break;
+					case 5:
+						window.location.href = "traveler.html"
+						break;
+					default:
+				}
+			},
+			details() {
+				window.location.href = "details.html"
+			},
+			inputting() {
+				window.location.href = "inputting.html"
+			},
+			mod() {
+				window.location.href = "modification.html"
+			},
+			step() {
+				window.location.href = "step.html"
+			},
+			backhome() {
+				window.location.href = "index.html"
+			}
+		},
+
+	})
+</script>
+
+</html>

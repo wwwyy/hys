@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.8/lib/theme-default/index.css">
+    <link rel="stylesheet" href="../css/time.css">
+    <style media="screen">
+        body {
+            margin: 0;
+        }
+
+        .bg {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            background: url("../img/banner4.jpg") no-repeat 0px -2px;
+            background-size: 101% 700px;
+        }
+
+        .choose_box {
+            position: absolute;
+            width: 600px;
+            height: 120px;
+            background: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-250px) translateX(-80px);
+            border-radius: 10px;
+        }
+
+        .demo-table-expand {
+            font-size: 0;
+        }
+
+        .demo-table-expand label {
+            width: 90px;
+            color: #99a9bf;
+        }
+
+        .demo-table-expand .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 50%;
+        }
+
+        .box {
+            display: none;
+        }
+
+        .box1 {
+            display: block;
+        }
+
+        .transition-box {
+            margin-bottom: 4px;
+            /*width: 200px;*/
+            /*height: 100px;*/
+            border-radius: 4px;
+            background-color: #FF4949;
+            text-align: center;
+            color: #fff;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            margin-right: 20px;
+        }
+
+        .text {
+            font-size: 14px;
+        }
+
+        .item {
+            padding: 18px 0;
+        }
+
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+
+        .clearfix:after {
+            clear: both
+        }
+
+        .box-card {
+            /*display: inline-block;*/
+            /*width: 520px;*/
+        }
+
+        .showbox {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="2">国内机票</el-menu-item>
+            <el-menu-item index="3">首页酒店</el-menu-item>
+            <el-menu-item index="4" @click="backhome">全流程服务</el-menu-item>
+            <el-menu-item index="5">关于我们</el-menu-item>
+            <el-menu-item index="5">联系我们</el-menu-item>
+        </el-menu>
+        <div class="bg">
+            <el-col :span="4">
+              <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="light">
+									<el-menu-item index="1" @click="show(1)">全流程出行计划列表(用户)</el-menu-item>
+									<el-menu-item index="2" @click="show(2)">全流程计划模板设置(客服)</el-menu-item>
+									<el-menu-item index="3" @click="show(3)">全流程计划监控</el-menu-item>
+									<el-menu-item index="4" @click="show(4)">全流程出行计划列表(客服)</el-menu-item>
+									<el-menu-item index="5" @click="show(5)">定制出行计划(客服)</el-menu-item>
+							</el-menu>
+            </el-col>
+            <el-col :span="20">
+                <template>
+                    <el-card class="box-card">
+  <div slot="header" class="clearfix">
+    <span style="line-height: 36px;">出行计划详情</span>
+    <!-- <el-button style="float: right;" type="primary" @click="show1 = !show1">全流程节点展示</el-button> -->
+  </div>
+  <div style="margin-top: 20px;">
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">出行人:<span style="padding-left:20px;">{{ name }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">负责人:<span style="padding-left:20px;">{{ resp }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">联系电话:<span style="padding-left:20px;">{{ phone }}</span></i></div></el-col>
+          <!-- <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#1D8CE0;color:#fff;"> <i class="el-icon-caret-right">活动性质:<span style="padding-left:20px;">{{ type }}</span></i></div></el-col> -->
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">活动名称:<span style="padding-left:20px;">{{ eventName }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">出发日期:<span style="padding-left:20px;">{{ arrDate }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">返回时间:<span style="padding-left:20px;">{{ depDate }}</span></i></div></el-col>
+
+          <!-- <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">负责人:<span style="padding-left:20px;">{{ resp }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">联系电话:<span style="padding-left:20px;">{{ phone }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#20A0FF;color:#fff;"> <i class="el-icon-caret-right">同行人:<span style="padding-left:20px;">{{ dynamicTags }}</span></i></div></el-col> -->
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="space-between">
+          <!-- <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">出发日期:<span style="padding-left:20px;">{{ arrDate }}</span></i></div></el-col>
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">返回时间:<span style="padding-left:20px;">{{ depDate }}</span></i></div></el-col> -->
+          <el-col :span="16"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">行程:<span style="padding-left:20px;">{{ journey }}</span></i></div></el-col>
+
+          <el-col :span="8"><div style="line-height:32px;padding:8px 0;background:#58B7FF;color:#fff;"> <i class="el-icon-caret-right">备注:<span style="padding-left:20px;">{{ desc }}</span></i></div></el-col>
+      </el-row>
+      <!-- <el-row type="flex" class="row-bg" justify="space-between">
+      </el-row> -->
+      <el-collapse-transition>
+        <div style="margin-top:30px;">
+            <el-tabs type="border-card" @tab-click="initial">
+  <el-tab-pane>
+    <span slot="label"><i class="el-icon-date"></i> 我的行程服务</span>
+    <div class="transition-box" style="padding:10px;margin-bottom:10px">全流程节点展示</div>
+    <el-checkbox-group v-model="checkList" @change="handleCheckedChange">
+   <div class="transition-box" style="padding:20px;background:#ef5350">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div></div></el-col>
+           <el-col :span="3"><div>服务名称</div></el-col>
+           <el-col :span="16"><div>服务详情介绍</div></el-col>
+     </el-row>
+   </div>
+   <div class="transition-box" style="padding:20px;background:#f44336">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div><el-checkbox label="服务 1" style="color:#fff"></el-checkbox></el-checkbox></div></el-col>
+           <el-col :span="3"><div>机场送机</div></el-col>
+           <el-col :span="16" style="text-align:left;"><div>为您提供国内机场送机服务,专车服务覆盖了全国所有一二线城市，包括国内70多个机场，数千个城市热门商圈，专车全天24小时接送，飞机晚点免费等待让您享受国际五星级出行服务.</div></el-col>
+     </el-row>
+     <div class="showbox showbox1" style="display:none;">
+         <div class="transition-box" style="padding:20px;background:#666">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">
+ <el-button type="warning" icon="plus" size="mini" style="margin-right:10px" @click="addServ"></el-button>送机服务</el-col>
+<el-col :span="3">
+ <div>服务时间 一</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker v-model="value1" type="datetime" placeholder="选择日期时间">
+ </el-date-picker>
+ <!-- <el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button> -->
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box1" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">送机服务</el-col>
+<el-col :span="3">
+<div>服务时间 二</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value2" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box2" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">送机服务</el-col>
+<el-col :span="3">
+<div>服务时间 三</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value3" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(2)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box3" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">送机服务</el-col>
+<el-col :span="3">
+<div>服务时间 四</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value4" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(3)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box4" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">送机服务</el-col>
+<el-col :span="3">
+<div>服务时间 五</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value5" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(4)">删除</el-button>
+</el-col>
+
+</el-row>
+
+</div>
+     </div>
+
+   </div>
+   <div class="transition-box" style="padding:20px;background:#e53935">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div><el-checkbox label="服务 2" style="color:#fff"></el-checkbox></div></el-col>
+           <el-col :span="3"><div>机场接机</div></el-col>
+               <el-col :span="16" style="text-align:left;"><div>为您提供国内机场接机服务,专车服务覆盖了全国所有一二线城市，包括国内70多个机场，数千个城市热门商圈，专车全天24小时接送，飞机晚点免费等待让您享受国际五星级出行服务.</div></el-col>
+     </el-row>
+     <div class="showbox showbox2" style="display:none;">
+         <div class="transition-box" style="padding:20px;background:#666">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">
+ <el-button type="warning" icon="plus" size="mini" style="margin-right:10px" @click="addServ"></el-button>接机服务</el-col>
+<el-col :span="3">
+ <div>服务时间 一</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker v-model="value1" type="datetime" placeholder="选择日期时间">
+ </el-date-picker>
+ <!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+ <!-- <el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button> -->
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box1" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">接机服务</el-col>
+<el-col :span="3">
+<div>服务时间 二</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value2" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box2" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">接机服务</el-col>
+<el-col :span="3">
+<div>服务时间 三</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value3" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(2)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box3" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">接机服务</el-col>
+<el-col :span="3">
+<div>服务时间 四</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value4" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(3)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box4" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">接机服务</el-col>
+<el-col :span="3">
+<div>服务时间 五</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value5" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(4)">删除</el-button>
+</el-col>
+
+</el-row>
+
+</div>
+     </div>
+   </div>
+
+   <div class="transition-box" style="padding:20px;background:#d32f2f">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div><el-checkbox label="服务 3" style="color:#fff" @click="show10 = !show10"></el-checkbox></div></el-col>
+           <el-col :span="3"><div>贵宾室服务</div></el-col>
+               <el-col :span="16" style="text-align:left;"><div>当您通过保安检查后，便可把人潮和繁扰一一放下，尊享贵宾室的殷勤款待和个人空间，享受美好时刻。</div></el-col>
+
+     </el-row>
+     <div class="showbox showbox3" style="display:none;">
+         <div class="transition-box" style="padding:20px;background:#666">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">
+ <el-button type="warning" icon="plus" size="mini" style="margin-right:10px" @click="addServ"></el-button>贵宾室服务</el-col>
+<el-col :span="3">
+ <div>服务时间 一</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker v-model="value1" type="datetime" placeholder="选择日期时间">
+ </el-date-picker>
+ <!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+ <!-- <el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button> -->
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box1" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">贵宾室服务</el-col>
+<el-col :span="3">
+<div>服务时间 二</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value2" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box2" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">贵宾室服务</el-col>
+<el-col :span="3">
+<div>服务时间 三</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value3" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(2)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box3" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">贵宾室服务</el-col>
+<el-col :span="3">
+<div>服务时间 四</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value4" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(3)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box4" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">贵宾室服务</el-col>
+<el-col :span="3">
+<div>服务时间 五</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value5" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(4)">删除</el-button>
+</el-col>
+
+</el-row>
+
+</div>
+     </div>
+   </div>
+   <div class="transition-box" style="padding:20px;background:#c62828">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div><el-checkbox label="服务 4" style="color:#fff" @click="show10 = !show10"></el-checkbox></div></el-col>
+           <el-col :span="3"><div>CIP服务</div></el-col>
+               <el-col :span="16" style="text-align:left;"><div>1.快速代办check in ，2.快速安检，3.快速送至登机口等三快服务.</div></el-col>
+
+     </el-row>
+     <div class="showbox showbox4" style="display:none;">
+         <div class="transition-box" style="padding:20px;background:#666">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">
+ <el-button type="warning" icon="plus" size="mini" style="margin-right:10px" @click="addServ"></el-button>CIP服务</el-col>
+<el-col :span="3">
+ <div>服务时间 一</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker v-model="value1" type="datetime" placeholder="选择日期时间">
+ </el-date-picker>
+ <!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+ <!-- <el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button> -->
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box1" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">CIP服务</el-col>
+<el-col :span="3">
+<div>服务时间 二</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value2" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box2" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">CIP服务</el-col>
+<el-col :span="3">
+<div>服务时间 三</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value3" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(2)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box3" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">CIP服务</el-col>
+<el-col :span="3">
+<div>服务时间 四</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value4" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(3)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box4" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">CIP服务</el-col>
+<el-col :span="3">
+<div>服务时间 五</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+<el-date-picker v-model="value5" type="datetime" placeholder="选择日期时间">
+</el-date-picker>
+<!-- <el-input v-model="input" placeholder="请输入地点" style="display:inline-block;width:200px;margin-left:40px"></el-input> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(4)">删除</el-button>
+</el-col>
+
+</el-row>
+
+</div>
+     </div>
+   </div>
+   <div class="transition-box" style="padding:20px;background:#b71c1c">
+       <el-row type="flex" class="row-bg" justify="space-between">
+           <el-col :span="3"><div><el-checkbox label="服务 5" style="color:#fff" @click="show10 = !show10"></el-checkbox></div></el-col>
+           <el-col :span="3"><div>租车服务</div></el-col>
+               <el-col :span="16" style="text-align:left;"><div>根据您的出行计划,预定出行车辆,满足您的出行需求.</div></el-col>
+
+     </el-row>
+     <div class="showbox showbox5" style="display:none;">
+         <div class="transition-box" style="padding:20px;background:#666">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">
+ <el-button type="warning" icon="plus" size="mini" style="margin-right:10px" @click="addServ"></el-button>租车服务</el-col>
+<el-col :span="3">
+ <div>服务时间 一</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker
+v-model="value3"
+type="datetimerange"
+placeholder="选择时间范围">
+</el-date-picker>
+ <!-- <el-select v-model="value" placeholder="请选择车型">
+<el-option
+v-for="item in options"
+:key="item.value"
+:label="item.label"
+:value="item.value">
+</el-option>
+</el-select> -->
+ <!-- <el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button> -->
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box1" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">租车服务</el-col>
+<el-col :span="3">
+<div>服务时间 二</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker
+v-model="value3"
+type="datetimerange"
+placeholder="选择时间范围">
+</el-date-picker>
+ <!-- <el-select v-model="value" placeholder="请选择车型">
+<el-option
+v-for="item in options"
+:key="item.value"
+:label="item.label"
+:value="item.value">
+</el-option>
+</el-select> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(1)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box2" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">租车服务</el-col>
+<el-col :span="3">
+<div>服务时间 三</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker
+v-model="value3"
+type="datetimerange"
+placeholder="选择时间范围">
+</el-date-picker>
+ <!-- <el-select v-model="value" placeholder="请选择车型">
+<el-option
+v-for="item in options"
+:key="item.value"
+:label="item.label"
+:value="item.value">
+</el-option>
+</el-select> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(2)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box3" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">租车服务</el-col>
+<el-col :span="3">
+<div>服务时间 四</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker
+v-model="value3"
+type="datetimerange"
+placeholder="选择时间范围">
+</el-date-picker>
+ <!-- <el-select v-model="value" placeholder="请选择车型">
+<el-option
+v-for="item in options"
+:key="item.value"
+:label="item.label"
+:value="item.value">
+</el-option>
+</el-select> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(3)">删除</el-button>
+</el-col>
+</el-row>
+
+</div>
+<div class="transition-box transition-box4" style="padding:20px;background:#666;display:none">
+<el-row type="flex" class="row-bg" justify="space-between">
+<el-col :span="3">租车服务</el-col>
+<el-col :span="3">
+<div>服务时间 五</div>
+</el-col>
+<el-col :span="16" style="text-align:left;">
+ <el-date-picker
+v-model="value3"
+type="datetimerange"
+placeholder="选择时间范围">
+</el-date-picker>
+ <!-- <el-select v-model="value" placeholder="请选择车型">
+<el-option
+v-for="item in options"
+:key="item.value"
+:label="item.label"
+:value="item.value">
+</el-option>
+</el-select> -->
+<el-button type="danger" icon="plus" size="small" style="margin-right:10px" @click="del(4)">删除</el-button>
+</el-col>
+
+</el-row>
+
+</div>
+     </div>
+   </div>
+   <div style="text-align:center">
+       <el-button type="success" size="large" @click="succ">提交出行计划</el-button>
+   </div>
+    </el-checkbox-group>
+  </el-tab-pane>
+  <el-tab-pane label="全程浏览" >
+      <div id="time">
+          <!-- <button class="initial" @click="initial()">全程浏览</button> -->
+          <transition-group class="timeline" tag="ul" name="fade">
+              <li class="dialog_wrapper" v-for="(data,id) in datas" :key="data" :style="{'transition-delay': id/2+'s'}">
+                  <div class="dialog">
+                      <h3 class="year">{{data.year}}
+                          <div class="decor_bar"></div>
+                      </h3>
+                      <ul class="content">
+                          <li class="brief" v-for="item in data.brief">{{item.tag}}</li>
+                      </ul>
+                  </div>
+              </li>
+          </transition-group>
+      </div>
+  </el-tab-pane>
+  <!-- <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+  <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane> -->
+</el-tabs>
+
+
+        <!-- </div> -->
+      </el-collapse-transition>
+    </div>
+
+</el-card>
+                </template>
+            </el-col>
+
+        </div>
+    </div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- <script src="../js/time.js"></script> -->
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui@1.4.8/lib/index.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js">
+</script>
+<script>
+    var formData = JSON.parse(localStorage.form);
+    var sevrNub = 0;
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                datas: [],
+                input: '',
+                checkList: [],
+                name: formData.name,
+                arrDate: formData.date[0].substring(0, 10),
+                depDate: formData.date[1].substring(0, 10),
+                desc: formData.desc,
+                eventName: formData.eventName,
+                phone: formData.phone,
+                resource: formData.resource,
+                resp: formData.resp,
+                type: formData.type.join("、"),
+                dynamicTags: formData.dynamicTags.join("、"),
+                journey: formData.journey,
+                show1: false,
+                show2: false,
+                show3: false,
+                show4: false,
+                show5: false,
+                show10: false,
+                value1: '',
+                value2: '',
+                value3: '',
+                value4: '',
+                value5: '',
+                value6: '',
+                options: [{
+                    value: '选项1',
+                    label: '经济型'
+                }, {
+                    value: '选项2',
+                    label: '商务型'
+                }, {
+                    value: '选项3',
+                    label: '豪华型'
+                }, {
+                    value: '选项4',
+                    label: 'SUV'
+                }, {
+                    value: '选项5',
+                    label: '6至15座商务'
+                }],
+                value: '',
+                tableData5: [{
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }, {
+                    date: '2017-10-02',
+                    city: '北京',
+                    node: '机票预订',
+                    resp: '诸葛亮',
+                    call: '18888888888',
+                    message: '张首席机票，已完成预订',
+                    ps: '蔓越莓蔓越莓蔓越莓'
+                }],
+                tableData1: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                tableData2: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    number: '2人',
+                    stroke: '青岛==>北京==>杭州==>上海==>青岛',
+                    state: '待执行'
+                }],
+                tableData3: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    founder: '关羽',
+                    state: '待执行',
+                    date: '2017-10-01'
+                }],
+                tableData4: [{
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date: '2017-10-01'
+                }, {
+                    orderNo: '11212121212',
+                    name: '王小虎',
+                    phoneNumb: '18888888888',
+                    email: '250880088@qq.com',
+                    date: '2017-10-01'
+                }]
+            }
+        },
+        methods: {
+            succ() {
+                window.location.href = "itinerary.html"
+            },
+            del(nub) {
+                $('.transition-box' + nub).hide()
+            },
+            addServ() {
+                sevrNub++;
+                $('.transition-box' + sevrNub).show()
+            },
+            handleCheckedChange() {
+                $('.showbox').hide()
+                for (var i = 0; i < this.checkList.length; i++) {
+                    let Nub = this.checkList[i].substring(3, 4)
+                    $('.showbox' + Nub).show()
+                }
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            show(index) {
+                switch (index) {
+                    case 1:
+                        window.location.href = "itinerary.html"
+                        break;
+                    case 2:
+                        window.location.href = "modification.html"
+                        break;
+                    case 3:
+                        window.location.href = "particulars.html"
+                        break;
+                    case 4:
+                        window.location.href = "costlist.html"
+                        break;
+                    case 5:
+                        window.location.href = "traveler.html"
+                        break;
+                    default:
+                }
+            },
+            details() {
+                window.location.href = "details.html"
+            },
+            inputting() {
+                window.location.href = "inputting.html"
+            },
+            mod() {
+                window.location.href = "modification.html"
+            },
+            step() {
+                window.location.href = "step.html"
+            },
+            backhome() {
+                window.location.href = "index.html"
+            },
+            nnnnn(call){
+                console.log(call);
+            },
+            initial() {
+                // $('.dialog_wrapper').hide()
+                this.datas = [];
+                this.datas = [{
+                        year: '2017-10-21 14：00',
+                        brief: [{
+                            tag: "送机服务"
+                        }]
+                    },
+                    {
+                        year: '2017-10-22 14：00',
+                        brief: [{
+                                tag: "接机服务"
+                            },
+                            {
+                                tag: "贵宾室服务"
+                            }
+                        ]
+                    },
+                    {
+                        year: '2017-10-23 14：00',
+                        brief: [{
+                            tag: "送机服务"
+                        }]
+                    },
+                    {
+                        year: '2017-10-24 14：00',
+                        brief: [{
+                            tag: "接机服务"
+                        }]
+                    },
+                    {
+                        year: '2017-10-25 14：00',
+                        brief: [{
+                            tag: "接机服务"
+                        }]
+                    },
+                    {
+                        year: '2017-10-24 14：00',
+                        brief: [{
+                            tag: "接机服务"
+                        }]
+                    },
+                    {
+                        year: '2017-10-24 14：00',
+                        brief: [{
+                            tag: "接机服务"
+                        }]
+                    },
+                ]
+            },
+        },
+
+    })
+    //     var Main = {
+    //     data() {
+    //       return {
+    //         options: [{
+    //           value: '选项1',
+    //           label: '黄金糕'
+    //         }, {
+    //           value: '选项2',
+    //           label: '双皮奶'
+    //         }, {
+    //           value: '选项3',
+    //           label: '蚵仔煎'
+    //         }, {
+    //           value: '选项4',
+    //           label: '龙须面'
+    //         }, {
+    //           value: '选项5',
+    //           label: '北京烤鸭'
+    //         }],
+    //         value8: ''
+    //       }
+    //     }
+    //   }
+    // var Ctor = Vue.extend(Main)
+    // new Ctor().$mount('#app')
+
+</script>
+
+</html>

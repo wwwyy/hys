@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/service/service_orders.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>火车票订单（客服）</title>
+    <style media="screen">
+        body {
+            min-width: 1200px;
+            /*overflow: hidden;*/
+        }
+
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+        .box-card {
+            float: left;
+            width: 31%;
+            margin: 10px 1%;
+        }
+        .el-date-editor.el-input, .el-date-editor.el-input__inner {
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="service_deal_contant">
+            <div id="search_box" class="clearfix">
+                <div class="search_input">
+                    <ul class="search_bo1 clearfix">
+                        <li class="clearfix">
+                            <span>订单号:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="orderNub" size="small">
+                            </el-input>
+                        </li>
+                        <li class="clearfix">
+                            <span>车次号:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="trainNub" size="small">
+                            </el-input>
+                        </li>
+                        <li class="clearfix">
+                            <span>出发日期:</span>
+                            <el-date-picker v-model="orderDate" type="date" placeholder="选择日期" :picker-options="pickerDate" size="small">
+                            </el-date-picker>
+                        </li>
+                        <li class="clearfix">
+                            <span>订单状态:</span>
+                            <el-select v-model="state" placeholder="请选择" size="small">
+                                <el-option v-for="item in stateOption" :key="item.state" :label="item.label" :value="item.state">
+                                </el-option>
+                            </el-select>
+                        </li>
+                    </ul>
+                    <ul class="search_bo2 clearfix">
+                        <li class="clearfix">
+                            <span>出发站:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="depStation" size="small">
+                            </el-input>
+                        </li>
+                        <li class="clearfix">
+                            <span>到达站:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="arrStation" size="small">
+                            </el-input>
+                        </li>
+                        <li class="clearfix">
+                            <span>联系人:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="name" size="small">
+                            </el-input>
+                        </li>
+                        <li class="clearfix">
+                            <span>手机:</span>
+                            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="phoneNub" size="small">
+                            </el-input>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search_btn_box">
+                    <el-button type="warning">查询</el-button>
+                </div>
+            </div>
+
+            <div id="info_btn">
+                <ul class="orders_list">
+                    <li v-for="order in orders" class="clearfix">
+                        <div class="order_left">
+                            <p>
+                                <strong style="font-size:16px;">{{ order.orderNo }}</strong>
+                            </p>
+                            <p>{{ order.trainOrderNo }}</p>
+                            <p>联系人:
+                                <strong>{{ order.name }}</strong>
+                            </p>
+                            <p>手机号:
+                                <strong>{{ order.phoneNo }}</strong>
+                            </p>
+                        </div>
+                        <div class="order_mid train_info clearfix">
+                            <div class="train_info_left">
+                                <p>{{order.trainNub}}</p>
+                                <p>
+                                    <el-button slot="reference" size="mini" round @click="vshow">乘车人和车票</el-button>
+                                </p>
+                            </div>
+                            <div class="train_info_mid">
+                                <div class="train_info_dep">
+                                    <p>{{order.depStation}}</p>
+                                    <p>{{order.depTime}}</p>
+                                    <p>{{order.depDate}}</p>
+                                </div>
+                                <div class="train_info_line">
+                                    <p>
+                                        <span class="train_line"></span>
+                                        <span class="train_ico"></span>
+                                    </p>
+                                    <p>
+                                        <span class="train_total_ico">{{order.totalTime}}</span>
+                                    </p>
+
+                                    <p>
+                                        <el-popover placement="bottom" title="经停站" width="200" trigger="manual">
+                                            <span class="station" v-for="(station,index) in order.stations">{{index+1}}------{{station}}
+                                                <br>
+                                            </span>
+                                            <el-button slot="reference" size="mini" round>经停站</el-button>
+                                        </el-popover>
+                                    </p>
+
+                                </div>
+                                <span v-for></span>
+                                <div class="train_info_arr">
+                                    <p>{{order.arrStation}}</p>
+                                    <p>{{order.arrTime}}</p>
+                                    <p>{{order.arrDate}}</p>
+                                </div>
+                            </div>
+                            <div class="train_info_right">
+                                <p>{{order.seat}}</p>
+                                <p class="train_prcie">￥{{order.price}}</p>
+                            </div>
+                            <div class="order_state">
+                                <p>{{order.state}}</p>
+                            </div>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <section style="margin-top:105px" v-show="ok">
+                                <p>11111111111111111</p>
+                                <p>21222222222222222</p>
+                                <p>22222222222222223</p>
+                                <p>11111111111111111</p>
+                                <p>21222222222222222</p>
+                                <p>22222222222222223</p>
+                            </section>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                            <span class="circle"></span>
+                        </div>
+                        <div class="order_right">
+                            <el-button type="warning">状态更新</el-button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="page">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 15, 20]"
+                    :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="400">
+                </el-pagination>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <!-- 引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript">
+        var Main = {
+            data() {
+                return {
+                    stationsInfo: false,
+                    currentPage: 1,
+                    orderNub: '',
+                    trainNub: '',
+                    orderDate: '',
+                    phoneNub: '',
+                    name: '',
+                    arrStation: '',
+                    depStation: '',
+                    ok: 'false',
+                    demos:[
+                        {
+                            name:'121',
+                            sex: '121212',
+                            phone: '12231231321'
+                        },
+                        {
+                            name:'121',
+                            sex: '121212',
+                            phone: '12231231321'
+                        },
+                        {
+                            name:'121',
+                            sex: '121212',
+                            phone: '12231231321'
+                        }
+                    ],
+                    pickerDate: {
+                        disabledDate(time) {
+                            // return time.getTime() > Date.now();
+                        }
+                    },
+                    stateOption: [{
+                        state: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        state: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        state: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        state: '选项4',
+                        label: '龙须面'
+                    }, {
+                        state: '选项5',
+                        label: '北京烤鸭'
+                    }],
+                    state: '',
+                    orders: [{
+                        name: '廖晓羽',
+                        trainOrderNo: 'TO2017101714158421',
+                        orderNo: 'TR201710090614944',
+                        cardNo: '372922198709172379',
+                        phoneNo: '18888888888',
+                        seatNo: '13D',
+                        trainNub: 'G701',
+                        depStation: '北京西',
+                        arrStation: '广州南',
+                        depTime: '07:27',
+                        arrTime: '17:13',
+                        depDate: '10月17日',
+                        arrDate: '10月17日',
+                        seat: '二等座',
+                        price: '862',
+                        totalTime: '9小时45分',
+                        state: '已出票',
+                        stations: [
+                            '北京',
+                            '上海'
+                        ]
+                    },
+                    {
+                        name: '周杰伦',
+                        trainOrderNo: 'TO2017101714158421',
+                        orderNo: 'TR201710090614944',
+                        cardNo: '372922198709172379',
+                        phoneNo: '18888888888',
+                        seatNo: '13F',
+                        trainNub: 'G701',
+                        depStation: '北京西',
+                        arrStation: '广州南',
+                        depTime: '07:27',
+                        arrTime: '17:13',
+                        depDate: '10月17日',
+                        arrDate: '10月17日',
+                        seat: '二等座',
+                        price: '862',
+                        totalTime: '9小时45分',
+                        state: '退票中',
+                        stations: [
+                            '青岛',
+                            '上海'
+                        ]
+                    },
+                    {
+                        name: '薛之谦',
+                        trainOrderNo: 'TO2017101714158421',
+                        orderNo: 'TR201710090614944',
+                        cardNo: '372922198709172379',
+                        phoneNo: '18888888888',
+                        seatNo: '13A',
+                        trainNub: 'G701',
+                        depStation: '北京西',
+                        arrStation: '广州南',
+                        depTime: '07:27',
+                        arrTime: '17:13',
+                        depDate: '10月17日',
+                        arrDate: '10月17日',
+                        seat: '二等座',
+                        price: '862',
+                        totalTime: '9小时45分',
+                        state: '退票失败',
+                        stations: [
+                            '天津',
+                            '上海'
+                        ]
+                    }
+                    ]
+                }
+            },
+            methods: {
+                vshow(){
+                    this.ok = !this.ok;
+                },
+                afterClose() {
+                    this.content = ''
+                },
+                //表格显示不同背景颜色
+                tableRowClassName({
+                    row,
+                    rowIndex
+                }) {
+                    if (rowIndex === 1) {
+                        return 'warning-row';
+                    } else if (rowIndex === 3) {
+                        return 'success-row';
+                    }
+                    return '';
+                },
+                //分页
+                handleSizeChange(val) {
+                    console.log(`每页 ${val} 条`);
+                },
+                handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                }
+            }
+
+        }
+        var Ctor = Vue.extend(Main)
+        new Ctor().$mount('#service_deal_contant')
+    </script>
+</body>
+
+</html>
