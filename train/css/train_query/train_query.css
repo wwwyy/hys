@@ -1,0 +1,306 @@
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+#back {
+  width: 100%;
+  height: 80px;
+  background: skyblue;
+  border-radius: 15px;
+  margin-top: 30px; }
+
+#all {
+  width: 776px;
+  height: 100px;
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  right: 300px;
+  -webkit-animation: 24s run infinite linear;
+  -o-animation: 24s run infinite linear;
+  animation: 24s run infinite linear;
+  transform: scaleY(0.5); }
+
+.tranHand {
+  width: 150px;
+  height: 100px;
+  border-radius: 70% 0% 0% 20%;
+  position: relative;
+  display: inline-block;
+  background: #fff;
+  overflow: hidden; }
+
+.tranBody {
+  width: 150px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+  background: #fff;
+  overflow: hidden; }
+
+.tranLast {
+  width: 150px;
+  height: 100px;
+  border-radius: 0% 70% 20% 0%;
+  position: relative;
+  display: inline-block;
+  background: #fff;
+  overflow: hidden; }
+
+.windows, .windows2 {
+  background: #ccc; }
+
+.door {
+  width: 40px;
+  height: 80px;
+  margin-top: 20px;
+  background: transparent;
+  position: relative;
+  z-index: 100;
+  border: 1px solid #666; }
+
+.tranHand .windows, .tranLast .windows {
+  width: 80px;
+  height: 50px; }
+
+.tranHand .windows {
+  float: left; }
+.tranHand .door {
+  float: left;
+  margin-left: 20px; }
+
+.tranLast .windows {
+  float: right; }
+.tranLast .door {
+  float: right;
+  margin-right: 20px; }
+
+.door .windows {
+  width: 30px;
+  height: 30px; }
+
+.tranBody .windows, .tranBody .windows2 {
+  width: 30px;
+  height: 30px; }
+.tranBody .windows, .tranBody .door, .tranBody .windows2 {
+  float: left; }
+.tranBody .windows {
+  margin: 20px 10px 0 14px; }
+.tranBody .windows2 {
+  margin: 20px 14px 0 10px; }
+
+.door .windows {
+  margin: 10px 5px 0px 5px; }
+
+.yellow {
+  background: #fa0;
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  top: 68px; }
+
+@keyframes run {
+  0% {
+    right: 300px; }
+  50% {
+    right: 100%; }
+  50.1% {
+    right: -100%; }
+  100% {
+    right: 300px; } }
+.train_run {
+  position: relative; }
+
+.con_date {
+  width: 700px;
+  height: 80px;
+  padding: 0 50px;
+  overflow: hidden;
+  position: relative;
+  background: #F5F5F5; }
+  .con_date i {
+    font-size: 35px;
+    width: 48px;
+    height: 78px;
+    line-height: 80px;
+    text-align: center;
+    background: #F5F5F5;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: #676767; }
+    .con_date i:hover {
+      background: #fff;
+      color: #1c7ec9; }
+  .con_date .click_l {
+    position: absolute;
+    z-index: 999;
+    left: 0; }
+  .con_date .click_r {
+    position: absolute;
+    z-index: 999;
+    right: 0; }
+  .con_date ul {
+    display: block;
+    position: absolute;
+    width: 3000px;
+    left: 50px; }
+  .con_date li {
+    display: block;
+    width: 98px;
+    height: 60px;
+    padding-top: 18px;
+    text-align: center;
+    float: left;
+    border: 1px solid #F5F5F5;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    cursor: pointer; }
+    .con_date li:hover {
+      background: #fff;
+      border-top: 4px solid #1c7ec9;
+      padding-top: 15px; }
+    .con_date li.on {
+      border: 1px solid #CCCCCC;
+      border-top: 4px solid #1c7ec9;
+      border-bottom: 1px solid #fff;
+      background: #fff;
+      padding-top: 15px;
+      cursor: inherit; }
+    .con_date li h4 {
+      font-size: 16px; }
+    .con_date li p {
+      color: #464646; }
+
+.con_list {
+  border: 1px solid #ccc;
+  border-top: none; }
+
+.filters_box .filter {
+  line-height: 40px;
+  font-size: 14px;
+  padding: 0 5px; }
+.filters_box #from_time {
+  border-top: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc; }
+.filters_box .check {
+  display: inline-block; }
+.filters_box .checked {
+  display: none; }
+.filters_box .on .check {
+  display: none; }
+.filters_box .on .checked {
+  display: inline-block;
+  color: #1c7ec9; }
+.filters_box .filter_key {
+  font-weight: 600; }
+.filters_box .filter_tabs {
+  cursor: pointer; }
+.filters_box .filter_option {
+  width: 150px;
+  margin: 0 10px;
+  cursor: pointer; }
+
+.con_list .title {
+  background: #F5F5F5;
+  line-height: 40px;
+  padding: 0 10px; }
+  .con_list .title .checi {
+    width: 100px;
+    padding-left: 30px; }
+  .con_list .title .chezhan {
+    width: 190px;
+    padding: 0 15px; }
+    .con_list .title .chezhan span {
+      margin-left: 25px; }
+  .con_list .title .time {
+    width: 100px;
+    padding: 0 20px;
+    text-align: center; }
+  .con_list .title .prices {
+    padding-left: 50px; }
+    .con_list .title .prices span {
+      margin: 0 5px; }
+  .con_list .title span {
+    display: inline-block; }
+
+.con_datas {
+  background: #f5f5f5; }
+  .con_datas .con_data {
+    margin: 0 10px;
+    padding: 5px 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 10px; }
+    .con_datas .con_data.on {
+      border: 1px solid #1c7ec9; }
+
+.con_list .con_datas .checi {
+  width: 100px;
+  padding: 0 15px;
+  font-size: 25px;
+  line-height: 50px; }
+.con_list .con_datas .chezhan {
+  width: 190px;
+  line-height: 30px;
+  padding: 0 15px;
+  border-left: 1px solid #ccc; }
+  .con_list .con_datas .chezhan .rit {
+    margin-left: 10px; }
+.con_list .chezhan .rit span {
+  margin: 0 5px; }
+.con_list .chezhan .rit .fromtime {
+  color: #1c7ec9;
+  font-size: 25px;
+  font-weight: 600; }
+.con_list .chezhan .rit .totime {
+  font-size: 18px;
+  font-weight: 600; }
+.con_list .con_datas .time {
+  width: 100px;
+  font-size: 14px;
+  padding: 0 20px;
+  border-left: 1px solid #ccc;
+  text-align: center;
+  line-height: 30px; }
+.con_list .con_datas .prices {
+  padding-left: 20px;
+  border-left: 1px solid #ccc;
+  line-height: 35px;
+  width: 250px; }
+  .con_list .con_datas .prices .SeatName {
+    display: inline-block;
+    width: 50px; }
+  .con_list .con_datas .prices .price {
+    display: inline-block;
+    width: 80px;
+    line-height: 20px;
+    font-size: 18px;
+    color: #f60;
+    padding: 0;
+    text-align: left; }
+    .con_list .con_datas .prices .price p {
+      margin-bottom: 5px; }
+  .con_list .con_datas .prices .pl {
+    padding: 2px 5px;
+    color: green;
+    font-weight: 600; }
+  .con_list .con_datas .prices a {
+    display: inline-block;
+    width: 50px;
+    line-height: 25px;
+    text-align: center;
+    background: #ff9419;
+    color: #fff;
+    margin-left: 31px;
+    border-radius: 4px;
+    margin-top: 5px;
+    float: right; }
+    .con_list .con_datas .prices a:hover {
+      background: #f68b33; }
+    .con_list .con_datas .prices a.note {
+      cursor: not-allowed;
+      background: #ccc; }
+
+/*# sourceMappingURL=train_query.css.map */

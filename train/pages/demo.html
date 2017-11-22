@@ -1039,3 +1039,48 @@
 </body>
 
 </html>
+
+
+<!-- //checkall -->
+<script src="//unpkg.com/vue/dist/vue.js"></script>
+<script src="//unpkg.com/element-ui@2.0.5/lib/index.js"></script>
+<div id="app">
+<template>
+  <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
+  <div style="margin: 15px 0;"></div>
+  <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+    <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+  </el-checkbox-group>
+</template>
+</div>
+<script>
+    const cityOptions = ['上海', '北京', '广州', '深圳'];
+  var Main = {
+    data() {
+      return {
+      	ok: false,
+        checkAll: true,
+        checkedCities: ['上海', '北京'],
+        cities: cityOptions,
+        isIndeterminate: false
+      };
+    },
+    methods: {
+      handleCheckAllChange(val) {
+      
+        this.checkedCities = val ? [] : [];
+        this.isIndeterminate = false
+        if(this.checkAll){this.ok=true}
+        
+      },
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = false
+        if(checkedCount==0){this.checkAll=true;this.ok = true}else{this.ok=false}
+        this.isIndeterminate = false;
+      }
+    }
+  };
+var Ctor = Vue.extend(Main)
+new Ctor().$mount('#app')
+</script>
