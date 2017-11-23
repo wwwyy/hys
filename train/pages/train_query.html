@@ -19,18 +19,23 @@
         .el-input {
             width: auto;
         }
+
         .transition-box {
-    margin-bottom: 10px;
-    width: 200px;
-    height: 100px;
-    border-radius: 4px;
-    background-color: #409EFF;
-    text-align: center;
-    color: #fff;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    margin-right: 20px;
-  }
+            margin-bottom: 10px;
+            /* width: 200px; */
+            /* height: 100px; */
+            border-radius: 4px;
+            background-color: #fff;
+            /* text-align: center; */
+            color: #fff;
+            padding: 8px 50px;
+            box-sizing: border-box;
+            /* margin-right: 20px; */
+        }
+
+        .el-checkbox-group {
+            display: inline-block;
+        }
     </style>
 
 </head>
@@ -104,158 +109,195 @@
                     </div>
                 </div>
             </div>
-            <section>
-                <section id="date_pick">
-                    <div class="con_date">
-                        <i class="iconfont click_l">&#xeb69;</i>
-                        <ul style="left:50px" id="DaysList">
-                            <li day_val="2017-11-13" class="">
-                                <h4>11-13</h4>
-                                <p>星期一</p>
-                            </li>
-                            <li day_val="2017-11-14" class="on">
-                                <h4>11-14</h4>
-                                <p>星期二</p>
-                            </li>
-                            <li day_val="2017-11-15" class="">
-                                <h4>11-15</h4>
-                                <p>星期三</p>
-                            </li>
-                            <li day_val="2017-11-16" class="">
-                                <h4>11-16</h4>
-                                <p>星期四</p>
-                            </li>
-                            <li day_val="2017-11-17" class="">
-                                <h4>11-17</h4>
-                                <p>星期五</p>
-                            </li>
-                            <li day_val="2017-11-18" class="">
-                                <h4>11-18</h4>
-                                <p>星期六</p>
-                            </li>
-                            <li day_val="2017-11-19" class="">
-                                <h4>11-19</h4>
-                                <p>星期日</p>
-                            </li>
-                            <li day_val="2017-11-20" class="">
-                                <h4>11-20</h4>
-                                <p>星期一</p>
-                            </li>
-                            <li day_val="2017-11-21" class="">
-                                <h4>11-21</h4>
-                                <p>星期二</p>
-                            </li>
-                            <li day_val="2017-11-22" class="">
-                                <h4>11-22</h4>
-                                <p>星期三</p>
-                            </li>
-                            <li day_val="2017-11-23" class="">
-                                <h4>11-23</h4>
-                                <p>星期四</p>
-                            </li>
-                            <li day_val="2017-11-24" class="">
-                                <h4>11-24</h4>
-                                <p>星期五</p>
-                            </li>
-                            <li day_val="2017-11-25" class="">
-                                <h4>11-25</h4>
-                                <p>星期六</p>
-                            </li>
-                            <li day_val="2017-11-26" class="">
-                                <h4>11-26</h4>
-                                <p>星期日</p>
-                            </li>
-                            <li day_val="2017-11-27" class="">
-                                <h4>11-27</h4>
-                                <p>星期一</p>
-                            </li>
-                            <li day_val="2017-11-28" class="">
-                                <h4>11-28</h4>
-                                <p>星期二</p>
-                            </li>
-                            <li day_val="2017-11-29" class="">
-                                <h4>11-29</h4>
-                                <p>星期三</p>
-                            </li>
-                            <li day_val="2017-11-30" class="">
-                                <h4>11-30</h4>
-                                <p>星期四</p>
-                            </li>
-                            <li day_val="2017-12-01" class="">
-                                <h4>12-01</h4>
-                                <p>星期五</p>
-                            </li>
-                            <li day_val="2017-12-02" class="">
-                                <h4>12-02</h4>
-                                <p>星期六</p>
-                            </li>
-                            <li day_val="2017-12-03" class="">
-                                <h4>12-03</h4>
-                                <p>星期日</p>
-                            </li>
-                            <li day_val="2017-12-04" class="">
-                                <h4>12-04</h4>
-                                <p>星期一</p>
-                            </li>
-                            <li day_val="2017-12-05" class="">
-                                <h4>12-05</h4>
-                                <p>星期二</p>
-                            </li>
-                            <li day_val="2017-12-06" class="">
-                                <h4>12-06</h4>
-                                <p>星期三</p>
-                            </li>
-                            <li day_val="2017-12-07" class="">
-                                <h4>12-07</h4>
-                                <p>星期四</p>
-                            </li>
-                            <li day_val="2017-12-08" class="">
-                                <h4>12-08</h4>
-                                <p>星期五</p>
-                            </li>
-                            <li day_val="2017-12-09" class="">
-                                <h4>12-09</h4>
-                                <p>星期六</p>
-                            </li>
-                            <li day_val="2017-12-10" class="">
-                                <h4>12-10</h4>
-                                <p>星期日</p>
-                            </li>
-                            <li day_val="2017-12-11" class="">
-                                <h4>12-11</h4>
-                                <p>星期一</p>
-                            </li>
-                            <li day_val="2017-12-12" class="">
-                                <h4>12-12</h4>
-                                <p>星期二</p>
-                            </li>
-                        </ul>
-                        <i class="iconfont click_r">&#xe605;</i>
-                    </div>
-                </section>
-                <section class="train_screen">
-                    <div>
-                        <el-button @click="show3 = !show3">Click Me</el-button>
-                        <div class="transition-box">el-collapse-transition</div>
-                        <div style="margin-top: 20px; height: 200px;">
-                          <el-collapse-transition>
-                            <div v-show="show3">
-                              <div class="transition-box">el-collapse-transition</div>
-                              <div class="transition-box">el-collapse-transition</div>
-                            </div>
-                          </el-collapse-transition>
+            <div id="train_info" class="clearfix">
+                <section class="train_info_left">
+                    <section id="date_pick">
+                        <div class="con_date">
+                            <i class="iconfont click_l">&#xeb69;</i>
+                            <ul style="left:50px" id="DaysList">
+                                <li day_val="2017-11-13" class="">
+                                    <h4>11-13</h4>
+                                    <p>星期一</p>
+                                </li>
+                                <li day_val="2017-11-14" class="on">
+                                    <h4>11-14</h4>
+                                    <p>星期二</p>
+                                </li>
+                                <li day_val="2017-11-15" class="">
+                                    <h4>11-15</h4>
+                                    <p>星期三</p>
+                                </li>
+                                <li day_val="2017-11-16" class="">
+                                    <h4>11-16</h4>
+                                    <p>星期四</p>
+                                </li>
+                                <li day_val="2017-11-17" class="">
+                                    <h4>11-17</h4>
+                                    <p>星期五</p>
+                                </li>
+                                <li day_val="2017-11-18" class="">
+                                    <h4>11-18</h4>
+                                    <p>星期六</p>
+                                </li>
+                                <li day_val="2017-11-19" class="">
+                                    <h4>11-19</h4>
+                                    <p>星期日</p>
+                                </li>
+                                <li day_val="2017-11-20" class="">
+                                    <h4>11-20</h4>
+                                    <p>星期一</p>
+                                </li>
+                                <li day_val="2017-11-21" class="">
+                                    <h4>11-21</h4>
+                                    <p>星期二</p>
+                                </li>
+                                <li day_val="2017-11-22" class="">
+                                    <h4>11-22</h4>
+                                    <p>星期三</p>
+                                </li>
+                                <li day_val="2017-11-23" class="">
+                                    <h4>11-23</h4>
+                                    <p>星期四</p>
+                                </li>
+                                <li day_val="2017-11-24" class="">
+                                    <h4>11-24</h4>
+                                    <p>星期五</p>
+                                </li>
+                                <li day_val="2017-11-25" class="">
+                                    <h4>11-25</h4>
+                                    <p>星期六</p>
+                                </li>
+                                <li day_val="2017-11-26" class="">
+                                    <h4>11-26</h4>
+                                    <p>星期日</p>
+                                </li>
+                                <li day_val="2017-11-27" class="">
+                                    <h4>11-27</h4>
+                                    <p>星期一</p>
+                                </li>
+                                <li day_val="2017-11-28" class="">
+                                    <h4>11-28</h4>
+                                    <p>星期二</p>
+                                </li>
+                                <li day_val="2017-11-29" class="">
+                                    <h4>11-29</h4>
+                                    <p>星期三</p>
+                                </li>
+                                <li day_val="2017-11-30" class="">
+                                    <h4>11-30</h4>
+                                    <p>星期四</p>
+                                </li>
+                                <li day_val="2017-12-01" class="">
+                                    <h4>12-01</h4>
+                                    <p>星期五</p>
+                                </li>
+                                <li day_val="2017-12-02" class="">
+                                    <h4>12-02</h4>
+                                    <p>星期六</p>
+                                </li>
+                                <li day_val="2017-12-03" class="">
+                                    <h4>12-03</h4>
+                                    <p>星期日</p>
+                                </li>
+                                <li day_val="2017-12-04" class="">
+                                    <h4>12-04</h4>
+                                    <p>星期一</p>
+                                </li>
+                                <li day_val="2017-12-05" class="">
+                                    <h4>12-05</h4>
+                                    <p>星期二</p>
+                                </li>
+                                <li day_val="2017-12-06" class="">
+                                    <h4>12-06</h4>
+                                    <p>星期三</p>
+                                </li>
+                                <li day_val="2017-12-07" class="">
+                                    <h4>12-07</h4>
+                                    <p>星期四</p>
+                                </li>
+                                <li day_val="2017-12-08" class="">
+                                    <h4>12-08</h4>
+                                    <p>星期五</p>
+                                </li>
+                                <li day_val="2017-12-09" class="">
+                                    <h4>12-09</h4>
+                                    <p>星期六</p>
+                                </li>
+                                <li day_val="2017-12-10" class="">
+                                    <h4>12-10</h4>
+                                    <p>星期日</p>
+                                </li>
+                                <li day_val="2017-12-11" class="">
+                                    <h4>12-11</h4>
+                                    <p>星期一</p>
+                                </li>
+                                <li day_val="2017-12-12" class="">
+                                    <h4>12-12</h4>
+                                    <p>星期二</p>
+                                </li>
+                            </ul>
+                            <i class="iconfont click_r">&#xe605;</i>
                         </div>
-                      </div>
-                </section>
-                <section id="train_lists">
-                    <ul v-for="list in lists">
-                        <li>
-                            <p>{{list.name}}</p>
-                        </li>
-                    </ul>
-                </section>
-            </section>
+                    </section>
+                    <section class="train_screen">
+                        <el-button @click="show3 = !show3" style="position:absolute;bottom:10px;right:10px;">更多条件</el-button>
+                        <div class="transition-box">
+                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
+                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                            </el-checkbox-group>
+                        </div>
+                        <div>
+                            <el-collapse-transition>
+                                <div v-show="show3">
+                                    <div class="transition-box">
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
+                                            :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                        </el-checkbox-group>
+                                    </div>
+                                    <div class="transition-box">
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
+                                            :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                        </el-checkbox-group>
+                                    </div>
+                                    <div class="transition-box">
+                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
+                                                :disabled="ok">全选</el-checkbox>
+                                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                        <div class="transition-box">
+                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
+                                                :disabled="ok">全选</el-checkbox>
+                                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                </div>
+                            </el-collapse-transition>
+                        </div>
+            </div>
+            
         </div>
+        </section>
+        <section id="train_lists">
+            <ul v-for="list in lists">
+                <li>
+                    <p>{{list.name}}</p>
+                </li>
+            </ul>
+        </section>
+        </section>
+        <aside class="train_info_right">
+
+        </aside>
+    </div>
+    </div>
     </div>
     <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
     <!-- 引入 Vue -->
@@ -333,11 +375,18 @@
         //         "left": left + "px"
         //     }, 200);
         // })
-
+        const trainType = ['G 高铁 / D 动车 / C 城际', '快车（Z / T / K）', 'L临客 / 普快'];
         var train_query = {
             data() {
                 return {
-                    show3: true,
+                    // 
+                    ok: false,
+                    checkAll: true,
+                    checkedCities: [],
+                    cities: trainType,
+                    isIndeterminate: false,
+                    // 
+                    show3: false,
                     input1: '',
                     input2: '',
                     input3: '',
@@ -362,6 +411,28 @@
                         }
                     ]
                 }
+            },
+            methods: {
+                handleCheckAllChange(val) {
+
+                    this.checkedCities = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkAll) {
+                        this.ok = true
+                    }
+
+                },
+                handleCheckedCitiesChange(value) {
+                    let checkedCount = value.length;
+                    this.checkAll = false
+                    if (checkedCount == 0) {
+                        this.checkAll = true;
+                        this.ok = true
+                    } else {
+                        this.ok = false
+                    }
+                    this.isIndeterminate = false;
+                }
             }
         }
         var Ctor = Vue.extend(train_query)
@@ -380,7 +451,7 @@
         //                 },
         //                 {
         //                     name: '11112',
-        //                     age: '13'
+        //                     age: '13'紫薯布丁
         //                 },
         //                 {
         //                     name: '12333',

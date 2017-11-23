@@ -118,12 +118,14 @@
 .train_run
   position: relative
 .con_date
-  width: 700px
+  width: 100%
+  min-width: 800px
   height: 80px
   padding: 0 50px
   overflow: hidden
   position: relative
   background: #F5F5F5
+  box-sizing: border-box
   i
     font-size: 35px
     width: 48px
@@ -313,3 +315,18 @@
         &.note
           cursor: not-allowed
           background: #ccc
+
+// 
+#train_info
+  width: 100%
+  margin-top: 20px
+  .train_info_left
+    float: left
+    width: 80%
+    border: 1px solid #ccc
+  .train_info_right
+    float: right
+    width: 15%
+.train_screen
+  position: relative
+  padding: 10px 0
