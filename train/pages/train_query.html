@@ -251,53 +251,100 @@
                             <el-collapse-transition>
                                 <div v-show="show3">
                                     <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
-                                            :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
                                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
                                             <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
                                     <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
-                                            :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
                                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
                                             <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
                                     <div class="transition-box">
-                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
-                                                :disabled="ok">全选</el-checkbox>
-                                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                                            </el-checkbox-group>
-                                        </div>
-                                        <div class="transition-box">
-                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
-                                                :disabled="ok">全选</el-checkbox>
-                                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                                            </el-checkbox-group>
-                                        </div>
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                        </el-checkbox-group>
+                                    </div>
+                                    <div class="transition-box">
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
+                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                        </el-checkbox-group>
+                                    </div>
                                 </div>
                             </el-collapse-transition>
                         </div>
+                    </section>
+                    <section id="train_lists">
+                        <div class="train_lists_title clearfix">
+                            <span>车次</span>
+                            <span>时间</span>
+                            <span>车站</span>
+                            <span>运行时长</span>
+                            <span>参考价</span>
+                            <span> </span>
+                        </div>
+                        <ul v-for="list in lists">
+                            <li class="clearfix">
+                                <div>
+                                    <p>K599</p>
+                                    <p><el-button size="mini">经停站</el-button></p>
+                                </div>
+                                <div class="station_time">
+                                    <p><span class="train_dep_time">07:27</span></p>
+                                    <p><span class="train_pass_time">13:13</span></p>
+                                    <p><span class="train_arr_time">17:13 <a href="javascript:;" style="color:skyblue">+1</a></span></p>
+                                </div>
+                                <div>
+                                    <p>北京西</p>
+                                    <p>广州</p>
+                                </div>
+                                <div>
+                                    <p> </p>
+                                    <p>9小时46分</p>
+                                </div>
+                                <div>
+                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
+                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
+                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
+                                </div>
+                                <div class="ticket_book">
+                                    <p><span>余 <mark>0</mark> 张</span><span><el-button size="mini" type="warning" disabled="ture">预订</el-button></span></p>
+                                    <p><span>余 <mark>121</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
+                                    <p><span>余 <mark>22</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+                <aside class="train_info_right">
+                    <h3>火车票小助手提示</h3>
+                    <ul>
+                        <li class="clearfix">
+                            <h5>线下取票</h5>
+                            <p>火车站售票窗口、铁路客票代售点或车站自动售票机均可取票。取票需携带瘦小身份证件。</p>
+                        </li>
+                        <li class="clearfix">
+                            <h5>退票说明</h5>
+                            <p>未换取纸质车票，发车前3小时可以在线申请退票。已取票的乘客，如需退票，请凭购票有效证件在发车前到火车站退票窗口办理。</p>
+                        </li>
+                        <li class="clearfix">
+                            <h5>退票费用</h5>
+                            <p>无票或取消订单退款到帐时间约为 3 一 21 天，按银行规定时限原渠道返还。开车时间巧夭（不含）以上退票的，不收退票费；巧天（含）以内 48 小时以上的按票价 5 ％计； 24 小时以上、不足 48 小时的按票价 10 ％计；不足 24 小时的按票价 20 ％计。并按照最低 2 元污划女取退票费。如果改签后乘车日期在春运期间收取 20 ％的退票费。最终退款以铁路局实退为准。</p>
+                        </li>
+                        <li class="clearfix">
+                            <h5>车票改签</h5>
+                            <p>暂不提供改签服务，需携带购票有效证件原件和火车票，在火车发车前，前去始发地火车站窗口，按照铁路局相关规定办理。</p>
+                        </li>
+                    </ul>
+                </aside>
             </div>
-            
-        </div>
-        </section>
-        <section id="train_lists">
-            <ul v-for="list in lists">
-                <li>
-                    <p>{{list.name}}</p>
-                </li>
-            </ul>
-        </section>
-        </section>
-        <aside class="train_info_right">
 
-        </aside>
-    </div>
-    </div>
+        </div>
+
     </div>
     <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
     <!-- 引入 Vue -->
@@ -451,7 +498,7 @@
         //                 },
         //                 {
         //                     name: '11112',
-        //                     age: '13'紫薯布丁
+        //                     age: '13'
         //                 },
         //                 {
         //                     name: '12333',
