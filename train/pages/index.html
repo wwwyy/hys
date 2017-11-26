@@ -107,6 +107,16 @@
 </template>
 			</div>
 		</div>
+		<div id="hot_city" class="clearfix">
+			<el-button>北京</el-button>
+			<el-button>上海</el-button>
+			<el-button>杭州</el-button>
+			<el-button>深圳</el-button>
+			<el-button>青岛</el-button>
+			<el-button>重庆</el-button>
+			<el-button>成都</el-button>
+			<el-button>广州</el-button>
+		</div>
 		<div id="container">
 
 		</div>
@@ -141,6 +151,15 @@
 			zoom: 10,
 			center: [116.480983, 40.0958]
 		});
+		AMap.plugin('AMap.Autocomplete',function(){//回调函数
+    //实例化Autocomplete
+    var autoOptions = {
+        city: "", //城市，默认全国
+        input:"input_id"//使用联想输入的input的id
+    };
+    autocomplete= new AMap.Autocomplete(autoOptions);
+    //TODO: 使用autocomplete对象调用相关功能
+})
 		// 日期
 		var Main = {
 			data() {
@@ -171,6 +190,14 @@
 		};
 		var pic = Vue.extend(MainPic)
 		new pic().$mount('#pic')
+		new Vue().$mount('#hot_city')
+		
+		$('.city_change_btn').click(function(){
+			var city = $('#search_dep').val();
+			$('#search_dep').val($('#search_arr').val());
+			$('#search_arr').val(city);
+			
+		})
 	</script>
 </body>
 
