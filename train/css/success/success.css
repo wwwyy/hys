@@ -1,0 +1,100 @@
+body {
+  width: 100wh;
+  height: 90vh;
+  color: #fff;
+  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  background-size: 400% 400%;
+  -webkit-animation: Gradient 15s ease infinite;
+  -moz-animation: Gradient 15s ease infinite;
+  animation: Gradient 15s ease infinite; }
+
+@-webkit-keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+@-moz-keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+h1, h6 {
+  font-family: "Open Sans";
+  font-weight: 300;
+  text-align: center;
+  position: absolute;
+  top: 45%;
+  right: 0;
+  left: 0; }
+
+#success {
+  width: 60%;
+  margin: 200px auto;
+  border: 1px solid #ccc;
+  background: #fff;
+  text-align: center;
+  color: #000000;
+  border-radius: 15px;
+  padding: 40px 0; }
+  #success p {
+    line-height: 50px;
+    font-weight: 600; }
+    #success p .orderNo, #success p .price, #success p .payType, #success p .orderTime {
+      width: 50%;
+      line-height: 50px;
+      font-size: 16px;
+      padding: 0 20px;
+      box-sizing: border-box; }
+    #success p .orderNo, #success p .payType {
+      float: left;
+      text-align: right; }
+    #success p .price, #success p .orderTime {
+      float: right;
+      text-align: left; }
+      #success p .price mark, #success p .orderTime mark {
+        background: none;
+        color: red; }
+  #success h2 {
+    font-size: 30px;
+    line-height: 50px;
+    padding: 0;
+    margin: 0; }
+    #success h2 .success_ico {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: url("../../img/common/success.png") no-repeat 0 0;
+      background-size: 40px;
+      vertical-align: middle;
+      margin-right: 20px; }
+  #success .btns {
+    margin-top: 10px; }
+    #success .btns > span:nth-of-type(1) {
+      width: 50%;
+      line-height: 50px;
+      font-size: 16px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      float: left;
+      text-align: right; }
+    #success .btns > span:nth-of-type(2) {
+      width: 50%;
+      line-height: 50px;
+      font-size: 16px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      float: right;
+      text-align: left; }
+
+/*# sourceMappingURL=success.css.map */

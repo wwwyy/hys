@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/success/success.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>支付成功</title>
+    <style media="screen">
+        body {
+            min-width: 1200px;
+            /*overflow: hidden;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="success">
+            <h2><span class="success_ico"></span>支付成功</h2>
+            <p class="clearfix"><span class="orderNo">订单编号：{{orderInfo.orderNo}}</span><span class="price">支付金额：<mark>¥{{orderInfo.price}}</mark></span></p>
+            <p class="clearfix"><span class="payType">支付类型：{{orderInfo.payType}}</span><span class="orderTime">支付时间：{{orderInfo.orderTime}}</span></p>
+            <p class="btns clearfix"><span><el-button type="warning" @click="currentOrder">查看当前订单</el-button></span><span><el-button type="success" @click="bookingPage">继续预订</el-button></span></p>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <!-- 引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript">
+        var reserve = new Vue({
+            el: '#success',
+
+            data() {
+                return {
+                    orderInfo: {
+                        orderNo: '12388323123112',
+                        price: '1332',
+                        payType: '虚拟卡支付',
+                        orderTime: '2017-11-23 14：00'
+                    }
+                }
+            },
+            //初始化
+            created: function() {
+
+            },
+            methods: {
+                currentOrder() {
+                    window.location.replace('http://www.hysinfo.com');
+                },
+                bookingPage() {
+                    window.location.replace('http://www.hysinfo.com');
+                }
+            },
+
+        })
+    </script>
+</body>
+
+</html>
