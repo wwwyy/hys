@@ -113,130 +113,130 @@
                 <section class="train_info_left">
                     <section id="date_pick">
                         <div class="con_date">
-                            <i class="iconfont click_l">&#xeb69;</i>
-                            <ul style="left:50px" id="DaysList">
-                                <li day_val="2017-11-13" class="">
+                            <i class="iconfont click_l" @click="click_l">&#xeb69;</i>
+                            <ul style="left:50px" id="DaysList" v-for="i in 30">
+                                <li @click="click_li" day_val="2017-11-13" class="">
                                     <h4>11-13</h4>
                                     <p>星期一</p>
                                 </li>
-                                <li day_val="2017-11-14" class="on">
+                                <!-- <li @click="click_li" day_val="2017-11-14" class="on">
                                     <h4>11-14</h4>
                                     <p>星期二</p>
                                 </li>
-                                <li day_val="2017-11-15" class="">
+                                <li @click="click_li" day_val="2017-11-15" class="">
                                     <h4>11-15</h4>
                                     <p>星期三</p>
                                 </li>
-                                <li day_val="2017-11-16" class="">
+                                <li @click="click_li" day_val="2017-11-16" class="">
                                     <h4>11-16</h4>
                                     <p>星期四</p>
                                 </li>
-                                <li day_val="2017-11-17" class="">
+                                <li @click="click_li" day_val="2017-11-17" class="">
                                     <h4>11-17</h4>
                                     <p>星期五</p>
                                 </li>
-                                <li day_val="2017-11-18" class="">
+                                <li @click="click_li" day_val="2017-11-18" class="">
                                     <h4>11-18</h4>
                                     <p>星期六</p>
                                 </li>
-                                <li day_val="2017-11-19" class="">
+                                <li @click="click_li" day_val="2017-11-19" class="">
                                     <h4>11-19</h4>
                                     <p>星期日</p>
                                 </li>
-                                <li day_val="2017-11-20" class="">
+                                <li @click="click_li" day_val="2017-11-20" class="">
                                     <h4>11-20</h4>
                                     <p>星期一</p>
                                 </li>
-                                <li day_val="2017-11-21" class="">
+                                <li @click="click_li" day_val="2017-11-21" class="">
                                     <h4>11-21</h4>
                                     <p>星期二</p>
                                 </li>
-                                <li day_val="2017-11-22" class="">
+                                <li @click="click_li" day_val="2017-11-22" class="">
                                     <h4>11-22</h4>
                                     <p>星期三</p>
                                 </li>
-                                <li day_val="2017-11-23" class="">
+                                <li @click="click_li" day_val="2017-11-23" class="">
                                     <h4>11-23</h4>
                                     <p>星期四</p>
                                 </li>
-                                <li day_val="2017-11-24" class="">
+                                <li @click="click_li" day_val="2017-11-24" class="">
                                     <h4>11-24</h4>
                                     <p>星期五</p>
                                 </li>
-                                <li day_val="2017-11-25" class="">
+                                <li @click="click_li" day_val="2017-11-25" class="">
                                     <h4>11-25</h4>
                                     <p>星期六</p>
                                 </li>
-                                <li day_val="2017-11-26" class="">
+                                <li @click="click_li" day_val="2017-11-26" class="">
                                     <h4>11-26</h4>
                                     <p>星期日</p>
                                 </li>
-                                <li day_val="2017-11-27" class="">
+                                <li @click="click_li" day_val="2017-11-27" class="">
                                     <h4>11-27</h4>
                                     <p>星期一</p>
                                 </li>
-                                <li day_val="2017-11-28" class="">
+                                <li @click="click_li" day_val="2017-11-28" class="">
                                     <h4>11-28</h4>
                                     <p>星期二</p>
                                 </li>
-                                <li day_val="2017-11-29" class="">
+                                <li @click="click_li" day_val="2017-11-29" class="">
                                     <h4>11-29</h4>
                                     <p>星期三</p>
                                 </li>
-                                <li day_val="2017-11-30" class="">
+                                <li @click="click_li" day_val="2017-11-30" class="">
                                     <h4>11-30</h4>
                                     <p>星期四</p>
                                 </li>
-                                <li day_val="2017-12-01" class="">
+                                <li @click="click_li" day_val="2017-12-01" class="">
                                     <h4>12-01</h4>
                                     <p>星期五</p>
                                 </li>
-                                <li day_val="2017-12-02" class="">
+                                <li @click="click_li" day_val="2017-12-02" class="">
                                     <h4>12-02</h4>
                                     <p>星期六</p>
                                 </li>
-                                <li day_val="2017-12-03" class="">
+                                <li @click="click_li" day_val="2017-12-03" class="">
                                     <h4>12-03</h4>
                                     <p>星期日</p>
                                 </li>
-                                <li day_val="2017-12-04" class="">
+                                <li @click="click_li" day_val="2017-12-04" class="">
                                     <h4>12-04</h4>
                                     <p>星期一</p>
                                 </li>
-                                <li day_val="2017-12-05" class="">
+                                <li @click="click_li" day_val="2017-12-05" class="">
                                     <h4>12-05</h4>
                                     <p>星期二</p>
                                 </li>
-                                <li day_val="2017-12-06" class="">
+                                <li @click="click_li" day_val="2017-12-06" class="">
                                     <h4>12-06</h4>
                                     <p>星期三</p>
                                 </li>
-                                <li day_val="2017-12-07" class="">
+                                <li @click="click_li" day_val="2017-12-07" class="">
                                     <h4>12-07</h4>
                                     <p>星期四</p>
                                 </li>
-                                <li day_val="2017-12-08" class="">
+                                <li @click="click_li" day_val="2017-12-08" class="">
                                     <h4>12-08</h4>
                                     <p>星期五</p>
                                 </li>
-                                <li day_val="2017-12-09" class="">
+                                <li @click="click_li" day_val="2017-12-09" class="">
                                     <h4>12-09</h4>
                                     <p>星期六</p>
                                 </li>
-                                <li day_val="2017-12-10" class="">
+                                <li @click="click_li" day_val="2017-12-10" class="">
                                     <h4>12-10</h4>
                                     <p>星期日</p>
                                 </li>
-                                <li day_val="2017-12-11" class="">
+                                <li @click="click_li" day_val="2017-12-11" class="">
                                     <h4>12-11</h4>
                                     <p>星期一</p>
                                 </li>
-                                <li day_val="2017-12-12" class="">
+                                <li @click="click_li" day_val="2017-12-12" class="">
                                     <h4>12-12</h4>
                                     <p>星期二</p>
-                                </li>
+                                </li> -->
                             </ul>
-                            <i class="iconfont click_r">&#xe605;</i>
+                            <i class="iconfont click_r" @click="click_r">&#xe605;</i>
                         </div>
                     </section>
                     <section class="train_screen">
@@ -291,12 +291,22 @@
                             <li class="clearfix">
                                 <div>
                                     <p>K599</p>
-                                    <p><el-button size="mini">经停站</el-button></p>
+                                    <p>
+                                        <el-button size="mini">经停站</el-button>
+                                    </p>
                                 </div>
                                 <div class="station_time">
-                                    <p><span class="train_dep_time">07:27</span></p>
-                                    <p><span class="train_pass_time">13:13</span></p>
-                                    <p><span class="train_arr_time">17:13 <a href="javascript:;" style="color:skyblue">+1</a></span></p>
+                                    <p>
+                                        <span class="train_dep_time">07:27</span>
+                                    </p>
+                                    <p>
+                                        <span class="train_pass_time">13:13</span>
+                                    </p>
+                                    <p>
+                                        <span class="train_arr_time">17:13
+                                            <a href="javascript:;" style="color:skyblue">+1</a>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div>
                                     <p>北京西</p>
@@ -307,14 +317,41 @@
                                     <p>9小时46分</p>
                                 </div>
                                 <div>
-                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
-                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
-                                    <p><span>硬座</span> <a href="javascript:;" style="color:#fa0;">￥251</a></p>
+                                    <p>
+                                        <span>硬座</span>
+                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
+                                    </p>
+                                    <p>
+                                        <span>硬座</span>
+                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
+                                    </p>
+                                    <p>
+                                        <span>硬座</span>
+                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
+                                    </p>
                                 </div>
                                 <div class="ticket_book">
-                                    <p><span>余 <mark>0</mark> 张</span><span><el-button size="mini" type="warning" disabled="ture">预订</el-button></span></p>
-                                    <p><span>余 <mark>121</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
-                                    <p><span>余 <mark>22</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
+                                    <p>
+                                        <span>余
+                                            <mark>0</mark> 张</span>
+                                        <span>
+                                            <el-button size="mini" type="warning" disabled="ture">预订</el-button>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span>余
+                                            <mark>121</mark> 张</span>
+                                        <span>
+                                            <el-button size="mini" type="warning">预订</el-button>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span>余
+                                            <mark>22</mark> 张</span>
+                                        <span>
+                                            <el-button size="mini" type="warning">预订</el-button>
+                                        </span>
+                                    </p>
                                 </div>
                             </li>
                         </ul>
@@ -333,7 +370,8 @@
                         </li>
                         <li class="clearfix">
                             <h5>退票费用</h5>
-                            <p>无票或取消订单退款到帐时间约为 3 一 21 天，按银行规定时限原渠道返还。开车时间巧夭（不含）以上退票的，不收退票费；巧天（含）以内 48 小时以上的按票价 5 ％计； 24 小时以上、不足 48 小时的按票价 10 ％计；不足 24 小时的按票价 20 ％计。并按照最低 2 元污划女取退票费。如果改签后乘车日期在春运期间收取 20 ％的退票费。最终退款以铁路局实退为准。</p>
+                            <p>无票或取消订单退款到帐时间约为 3 一 21 天，按银行规定时限原渠道返还。开车时间巧夭（不含）以上退票的，不收退票费；巧天（含）以内 48 小时以上的按票价 5 ％计； 24 小时以上、不足
+                                48 小时的按票价 10 ％计；不足 24 小时的按票价 20 ％计。并按照最低 2 元污划女取退票费。如果改签后乘车日期在春运期间收取 20 ％的退票费。最终退款以铁路局实退为准。</p>
                         </li>
                         <li class="clearfix">
                             <h5>车票改签</h5>
@@ -347,11 +385,13 @@
 
     </div>
     <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../js/moment.js"></script>
     <!-- 引入 Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript">
+    moment().format();
         // function filter_search() {
         //     var data = {};
         //     data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
@@ -395,16 +435,7 @@
 
 
         // $("#DaysList li").on("click", function () {
-        //     if (!$(this).hasClass("on")) {
-        //         $(this).addClass("on").siblings().removeClass("on");
-        //     }
-        //     var on_index = $("#DaysList li.on").index();
-        //     var from = (on_index - 3) <= 0 ? 0 : (on_index - 3);
-        //     from = from > 23 ? 23 : from;
-        //     $("#DaysList").animate({
-        //         "left": -((from * 100) - 50) + "px"
-        //     }, 200);
-        //     filter_search();
+            
         // })
         // $(".con_date .click_l").on("click", function () {
         //     var left = parseInt($("#DaysList").css("left").replace("px", ""));
@@ -432,6 +463,8 @@
                     checkedCities: [],
                     cities: trainType,
                     isIndeterminate: false,
+                    nowDate: '2017-11-27',
+                    dates: '',
                     // 
                     show3: false,
                     input1: '',
@@ -460,6 +493,13 @@
                 }
             },
             methods: {
+                date() {
+                    let allDate = [];
+                    
+                    for (let index = 0; index < 30; index++) {
+                       
+                    }
+                },
                 handleCheckAllChange(val) {
 
                     this.checkedCities = val ? [] : [];
@@ -479,6 +519,72 @@
                         this.ok = false
                     }
                     this.isIndeterminate = false;
+                },
+                filter_search() {
+                    var data = {};
+                    data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
+                    data.ToCode = $("#" + 'ctl00_ContentPlaceHolder1_title_toCode').val();
+                    data.trainType = $("#Train_type .filter_option.on").attr("filter_val");
+                    data.FilterStartTime = $("#from_time .filter_option.on").attr("filter_val");
+                    data.FilterArriveTime = $("#to_time .filter_option.on").attr("filter_val");
+
+                    data.Time = $("#DaysList li.on").attr("day_val");
+                    // var url = "ajaxFile/TrainsHelper.ashx";
+                    data.action = "TrainsList";
+                    $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html("");
+                    $("#hotel_list_login").show();
+                    // console.log(data);
+                    $.ajax(url, {
+                        type: "post",
+                        async: true,
+                        data: data,
+                        success: function (data) {
+                            $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html(data);
+                            $("#hotel_list_login").hide();
+                            $(".con_datas .con_data").hover(function () {
+                                $(this).addClass("on")
+                                $(this).find(".fromtime").animate({
+                                    "font-size": "30px"
+                                }, 150);
+                            }, function () {
+                                $(this).removeClass("on")
+                                $(this).find(".fromtime").animate({
+                                    "font-size": "25px"
+                                }, 150);
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            $("#hotel_list_login").hide();
+                        }
+                    });
+                },
+                click_li() {
+                    if (!$(this).hasClass("on")) {
+                        $(this).addClass("on").siblings().removeClass("on");
+                    }
+                    var on_index = $("#DaysList li.on").index();
+                    var from = (on_index - 3) <= 0 ? 0 : (on_index - 3);
+                    from = from > 23 ? 23 : from;
+                    $("#DaysList").animate({
+                        "left": -((from * 100) - 50) + "px"
+                    }, 200);
+                    this.filter_search();
+                },
+                click_l() {
+                    var left = parseInt($("#DaysList").css("left").replace("px", ""));
+                    left = (left + 700) < 50 ? (left + 700) : 50;
+                    console.log(left);
+                    $("#DaysList").animate({
+                        "left": left + "px"
+                    }, 200);
+                },
+                click_r() {
+                    var left = parseInt($("#DaysList").css("left").replace("px", ""));
+                    left = (left - 700) > -2250 ? (left - 700) : -2250;
+                    console.log(left);
+                    $("#DaysList").animate({
+                        "left": left + "px"
+                    }, 200);
                 }
             }
         }
