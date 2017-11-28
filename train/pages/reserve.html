@@ -12,7 +12,10 @@
     <style media="screen">
         body {
             min-width: 1200px;
-            /*overflow: hidden;*/
+            overflow: hidden;
+        }
+        .el-col-11 {
+            width: 55%;
         }
     </style>
 </head>
@@ -74,16 +77,9 @@
                                 </el-col>
                             </el-col>
                         </el-form-item>
-                        <!-- <el-form-item label="证件号码" prop="card">
-                            <el-col :span="11">
-                            <el-form-item prop="card">
-                            <el-select v-model="ruleForm.card" placeholder="请选择证件类型" style="width:160px">
-                                <el-option label="身份证" value="身份证"></el-option>
-                                <el-option label="护照" value="护照"></el-option>
-                            </el-select>
-                            <el-input v-model="ruleForm.cardNo" style="width:195px" prop="cardNo"></el-input>
-                            </el-col>
-                        </el-form-item>-->
+                        <div class="travels_infos clearfix">
+
+                        </div>
                         <el-form-item label="联系人" prop="contacts">
                             <el-col :span="11">
                                 <el-input v-model="ruleForm.contacts"></el-input>
@@ -100,7 +96,7 @@
                             <el-button @click="resetForm('ruleForm')">重置</el-button>
                         </el-form-item>
                     </el-form>
-                    <span class="add_traveler_btn"></span>
+                    <span class="add_traveler_btn" @click='prev'></span>
                 </div>
             </div>
             <div class="reserve_aside">
@@ -120,24 +116,24 @@
                     <li>
                         <span>乘车人:</span>
                         <span class="dashed_line"></span>
-                        <span>{{price}}人</span>
+                        <span>{{travelerTotal}}人</span>
                     </li>
                     <li></li>
                     <li>
                         <span>总票价:</span>
                         <span class="dashed_line"></span>
-                        <span>{{price}}人</span>
+                        <span>¥{{price*travelerTotal}}</span>
                     </li>
                     <li>
                         <span>总服务费:</span>
                         <span class="dashed_line"></span>
-                        <span>{{price}}人</span>
+                        <span>¥{{price*travelerTotal}}</span>
                     </li>
                     <li></li>
                     <li>
                         <span style="color:#ff0000;">应付金额:</span>
                         <span class="dashed_line"></span>
-                        <span>￥99999</span>
+                        <span>￥{{price*travelerTotal+price*travelerTotal}}</span>
                     </li>
                 </ul>
             </div>
@@ -163,6 +159,7 @@
                     arrDate: '10月17日',
                     seat: '二等座',
                     price: '862',
+                    travelerTotal: '1',
                     totalTime: '9小时45分',
                     ruleForm: {
                         name: '',
@@ -190,7 +187,7 @@
                         }],
                         cardNo: [{
                                 required: true,
-                                message: '请输入姓名',
+                                message: '请输入证件号码',
                                 trigger: 'blur'
                             },
                             {
@@ -232,6 +229,14 @@
 
             },
             methods: {
+                prev() {
+                    if(this.ruleForm.name&&this.ruleForm.card&&this.ruleForm.cardNo&&this.ruleForm.phoneNo){
+                        $('.travels_infos').append(`<div class="travels_info"><p>${this.ruleForm.name}<p><span><p>${this.ruleForm.card}</span><span><p>${this.ruleForm.cardNo}</span></div>`);
+                        $('.travels_infos').show();
+                        this.travelerTotal = $('.travels_info').length
+                        this.resetForm('ruleForm')
+                    }
+                },
                 //获取ajax数据
                 getData() {
 

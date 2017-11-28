@@ -12,7 +12,7 @@
     <style media="screen">
         body {
             min-width: 1200px;
-            overflow: hidden;
+            /* overflow: hidden; */
             background: #fff;
         }
 
@@ -22,15 +22,12 @@
 
         .transition-box {
             margin-bottom: 10px;
-            /* width: 200px; */
-            /* height: 100px; */
             border-radius: 4px;
             background-color: #fff;
-            /* text-align: center; */
             color: #fff;
-            padding: 8px 50px;
+            padding: 8px 10px;
+            color: #000;
             box-sizing: border-box;
-            /* margin-right: 20px; */
         }
 
         .el-checkbox-group {
@@ -43,27 +40,32 @@
 <body>
     <div class="wrap">
         <div id="train_query">
-            <div id="train_search_box">
-                <el-row>
-                    <el-col :span="6">
-                        <span class="input_title">预订人：</span>
-                        <el-input placeholder="请输入内容" v-model="input1">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="6">
-                        <span class="input_title">预订人：</span>
-                        <el-input placeholder="请输入内容" v-model="input1">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="6">
-                        <span class="input_title">预订人：</span>
-                        <el-input placeholder="请输入内容" v-model="input1">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="6">
-                        <el-button type="primary">查询</el-button>
-                    </el-col>
-                </el-row>
+            <div id="train_search_box" class="clearfix">
+                    <div class="search_conditions">
+                            <span class="input_title">出发站：</span>
+                            <el-input placeholder="请输入车站" v-model="input1">
+                            </el-input>
+                    </div>
+                    <div class="search_conditions">
+                            <span class="station_change"></span>
+                    </div>
+                    <div class="search_conditions">
+                            <span class="input_title">到达站：</span>
+                            <el-input placeholder="请输入车站" v-model="input1">
+                            </el-input>
+                    </div>
+                    <div class="search_conditions">
+                            <span class="input_title">出发日期：</span>
+                            <el-date-picker
+                            v-model="value1"
+                            type="date"
+                            placeholder="选择日期"
+                            :picker-options="pickerOptions0">
+                          </el-date-picker>
+                    </div>
+                    <div class="search_conditions">
+                            <el-button type="primary">查询</el-button>
+                    </div>
             </div>
             <div class="train_run">
                 <div id="back">
@@ -240,39 +242,51 @@
                         </div>
                     </section>
                     <section class="train_screen">
-                        <el-button @click="show3 = !show3" style="position:absolute;bottom:10px;right:10px;">更多条件</el-button>
-                        <div class="transition-box">
-                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
-                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        <el-button @click="show3 = !show3" style="position:absolute;bottom:20px;right:10px;">更多条件</el-button>
+                        <div class="transition-box clearfix">
+                            <span>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</span>
+                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkTypeAll" @change="handleCheckTypeAllChange" :disabled="typeOk">不限</el-checkbox>
+                            <el-checkbox-group v-model="checkedType" @change="handleCheckedTypeChange">
+                                <el-checkbox v-for="type in trainType" :label="type" :key="type">{{type}}</el-checkbox>
                             </el-checkbox-group>
                         </div>
                         <div>
                             <el-collapse-transition>
                                 <div v-show="show3">
-                                    <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                    <div class="transition-box clearfix">
+                                            <span>出发时段：</span>
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkDepTimeAll" @change="handleCheckDepTimeAllChange" :disabled="depTimeOk">不限</el-checkbox>
+                                        <el-checkbox-group v-model="checkDepTime" @change="handleCheckedDepTimeChange">
+                                            <el-checkbox v-for="time in depTime" :label="time" :key="time">{{time}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
-                                    <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                     <div class="transition-box clearfix">
+                                            <span>到达时段：</span>
+                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkArrTimeAll" @change="handleCheckArrTimeAllChange" :disabled="arrTimeOk">不限</el-checkbox>
+                                        <el-checkbox-group v-model="checkArrTime" @change="handleCheckedArrTimeChange">
+                                            <el-checkbox v-for="time in arrTime" :label="time" :key="time">{{time}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
-                                    <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
+                                    <div class="transition-box clearfix">
+                                            <span>出发车站：</span>
+                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkDepStationAll" @change="handleCheckDepStationAllChange" :disabled="depStationOk">不限</el-checkbox>
+                                            <el-checkbox-group v-model="checkDepStation" @change="handleCheckedDepStationChange">
+                                                <el-checkbox v-for="station in depStation" :label="station" :key="station">{{station}}</el-checkbox>
+                                            </el-checkbox-group>
                                     </div>
-                                    <div class="transition-box">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="ok">全选</el-checkbox>
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
+                                    <div class="transition-box clearfix">
+                                            <span>到达车站：</span>
+                                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkArrStationAll" @change="handleCheckArrStationAllChange" :disabled="arrStationOk">不限</el-checkbox>
+                                            <el-checkbox-group v-model="checkArrStation" @change="handleCheckedArrStationChange">
+                                                <el-checkbox v-for="station in arrStation" :label="station" :key="station">{{station}}</el-checkbox>
+                                            </el-checkbox-group>
+                                    </div>
+                                    <div class="transition-box clearfix">
+                                            <span>始发过路：</span>
+                                       <el-checkbox :indeterminate="isIndeterminate" v-model="checkFromPassingAll" @change="handleCheckFromPassingAllChange" :disabled="fromPassingOk">不限</el-checkbox>
+                                            <el-checkbox-group v-model="checkFromPassing" @change="handleCheckedFromPassingChange">
+                                                <el-checkbox v-for="station in fromPassing" :label="station" :key="station">{{station}}</el-checkbox>
+                                            </el-checkbox-group>
                                     </div>
                                 </div>
                             </el-collapse-transition>
@@ -331,6 +345,14 @@
                                     </p>
                                 </div>
                                 <div class="ticket_book">
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                                    <p><span>余 <mark>0</mark> 张</span><span><el-button size="mini" type="warning" disabled>预订</el-button></span></p>
+                                    <p><span>余 <mark>121</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
+                                    <p><span>余 <mark>22</mark> 张</span><span><el-button size="mini" type="warning">预订</el-button></span></p>
+=======
+>>>>>>> Stashed changes
                                     <p>
                                         <span>余
                                             <mark>0</mark> 张</span>
@@ -352,6 +374,10 @@
                                             <el-button size="mini" type="warning">预订</el-button>
                                         </span>
                                     </p>
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
                                 </div>
                             </li>
                         </ul>
@@ -453,15 +479,46 @@
         //         "left": left + "px"
         //     }, 200);
         // })
-        const trainType = ['G 高铁 / D 动车 / C 城际', '快车（Z / T / K）', 'L临客 / 普快'];
+        const trainTypeArr = ['G 高铁 / D 动车 / C 城际', '快车（Z / T / K）', 'L临客 / 普快'];
+        const depTimeArr = ['00:00-06:00', '06:00-12:00', '12:00-18:00','2:00-18:00'];
+        const arrTimeArr = ['00:00-06:00', '06:00-12:00', '12:00-18:00','2:00-18:00'];
+        const depStationArr = ['北京西'];
+        const arrStationArr = ['广州', '广州南', '广州东'];
+        const fromPassingArr = ['始发', '过路'];
         var train_query = {
             data() {
                 return {
                     // 
-                    ok: false,
-                    checkAll: true,
-                    checkedCities: [],
-                    cities: trainType,
+                    pickerOptions0: { //日期选择器
+					disabledDate(time) {
+						return time.getTime() < Date.now() - 8.64e7;
+					}
+				},
+                    value1: '',
+                    typeOk: false,
+                    depTimeOk: false,
+                    arrTimeOk: false,
+                    depStationOk: false,
+                    arrStationOk: false,
+                    fromPassingOk: false,
+                    checkTypeAll: true,
+                    checkDepTimeAll: true,
+                    checkArrTimeAll: true,
+                    checkDepStationAll: true,
+                    checkArrStationAll: true,
+                    checkFromPassingAll: true,
+                    checkedType: [],
+                    checkDepTime: [],
+                    checkArrTime: [],
+                    checkDepStation: [],
+                    checkArrStation: [],
+                    checkFromPassing: [],
+                    trainType: trainTypeArr,
+                    depTime: depTimeArr,
+                    arrTime: arrTimeArr,
+                    depStation: depStationArr,
+                    arrStation: arrStationArr,
+                    fromPassing: fromPassingArr,
                     isIndeterminate: false,
                     nowDate: '2017-11-27',
                     dates: '',
@@ -493,6 +550,18 @@
                 }
             },
             methods: {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                handleCheckTypeAllChange(val) {
+                    console.log(val)
+                    this.checkedType = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkTypeAll) {
+                        this.typeOk = true
+                    }
+=======
+>>>>>>> Stashed changes
                 date() {
                     let allDate = [];
                     
@@ -503,25 +572,129 @@
                     }
                 },
                 handleCheckAllChange(val) {
-
-                    this.checkedCities = val ? [] : [];
-                    this.isIndeterminate = false
-                    if (this.checkAll) {
-                        this.ok = true
-                    }
+>>>>>>> origin/master
 
                 },
-                handleCheckedCitiesChange(value) {
+                handleCheckedTypeChange(value) {
+                    console.log(value)
                     let checkedCount = value.length;
-                    this.checkAll = false
+                    this.checkTypeAll = false
                     if (checkedCount == 0) {
-                        this.checkAll = true;
-                        this.ok = true
+                        this.checkTypeAll = true;
+                        this.typeOk = true
                     } else {
-                        this.ok = false
+                        this.typeOk = false
                     }
                     this.isIndeterminate = false;
                 },
+                handleCheckDepTimeAllChange(val) {
+                    console.log(val)
+                    this.checkDepTime = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkDepTimeAll) {
+                        this.depTimeOk = true
+                    }
+
+                },
+                handleCheckedDepTimeChange(value) {
+                    console.log(value)
+                    let checkedCount = value.length;
+                    this.checkDepTimeAll = false
+                    if (checkedCount == 0) {
+                        this.checkDepTimeAll = true;
+                        this.depTimeOk = true
+                    } else {
+                        this.depTimeOk = false
+                    }
+                    this.isIndeterminate = false;
+                },
+                handleCheckArrTimeAllChange(val) {
+                    console.log(val)
+                    this.checkArrTime = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkArrTimeAll) {
+                        this.arrTimeOk = true
+                    }
+
+                },
+                handleCheckedArrTimeChange(value) {
+                    console.log(value)
+                    let checkedCount = value.length;
+                    this.checkArrTimeAll = false
+                    if (checkedCount == 0) {
+                        this.checkArrTimeAll = true;
+                        this.arrTimeOk = true
+                    } else {
+                        this.arrTimeOk = false
+                    }
+                    this.isIndeterminate = false;
+                },
+<<<<<<< Updated upstream
+=======
+                handleCheckDepStationAllChange(val) {
+                    console.log(val)
+                    this.checkDepStation = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkDepStationAll) {
+                        this.depStationOk = true
+                    }
+
+                },
+                handleCheckedDepStationChange(value) {
+                    console.log(value)
+                    let checkedCount = value.length;
+                    this.checkDepStationAll = false
+                    if (checkedCount == 0) {
+                        this.checkDepStationAll = true;
+                        this.depStationOk = true
+                    } else {
+                        this.depStationOk = false
+                    }
+                    this.isIndeterminate = false;
+                },
+                handleCheckArrStationAllChange(val) {
+                    console.log(val)
+                    this.checkArrStation = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkArrStationAll) {
+                        this.arrStationOk = true
+                    }
+
+                },
+                handleCheckedArrStationChange(value) {
+                    console.log(value)
+                    let checkedCount = value.length;
+                    this.checkArrStationAll = false
+                    if (checkedCount == 0) {
+                        this.checkArrStationAll = true;
+                        this.arrStationOk = true
+                    } else {
+                        this.arrStationOk = false
+                    }
+                    this.isIndeterminate = false;
+                },
+                handleCheckFromPassingAllChange(val) {
+                    console.log(val)
+                    this.checkFromPassing = val ? [] : [];
+                    this.isIndeterminate = false
+                    if (this.checkFromPassingAll) {
+                        this.fromPassingOk = true
+                    }
+
+                },
+                handleCheckedFromPassingChange(value) {
+                    console.log(value)
+                    let checkedCount = value.length;
+                    this.checkFromPassingAll = false
+                    if (checkedCount == 0) {
+                        this.checkFromPassingAll = true;
+                        this.fromPassingOk = true
+                    } else {
+                        this.fromPassingOk = false
+                    }
+                    this.isIndeterminate = false;
+                },
+>>>>>>> Stashed changes
                 filter_search() {
                     var data = {};
                     data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
