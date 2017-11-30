@@ -12,7 +12,6 @@
     <style media="screen">
         body {
             min-width: 1200px;
-            /* overflow: hidden; */
             background: #fff;
         }
 
@@ -43,16 +42,14 @@
             <div id="train_search_box" class="clearfix">
                 <div class="search_conditions">
                     <span class="input_title">出发站：</span>
-                    <el-input placeholder="请输入车站" v-model="input1">
-                    </el-input>
+                    <el-autocomplete v-model="state4" :fetch-suggestions="querySearchAsyncDep" placeholder="请输入内容" @select="handleSelectDep"></el-autocomplete>
                 </div>
                 <div class="search_conditions">
                     <span class="station_change"></span>
                 </div>
                 <div class="search_conditions">
                     <span class="input_title">到达站：</span>
-                    <el-input placeholder="请输入车站" v-model="input1">
-                    </el-input>
+                    <el-autocomplete v-model="state5" :fetch-suggestions="querySearchAsyncArr" placeholder="请输入内容" @select="handleSelectArr" ></el-autocomplete>
                 </div>
                 <div class="search_conditions">
                     <span class="input_title">出发日期：</span>
@@ -300,7 +297,7 @@
                         <ul v-for="list in lists">
                             <li class="clearfix">
                                 <div>
-                                    <p>K599</p>
+                                    <p>{{list.trainInfo.startTime}}</p>
                                     <p>
                                         <el-button size="mini">经停站</el-button>
                                     </p>
@@ -327,41 +324,20 @@
                                     <p>9小时46分</p>
                                 </div>
                                 <div>
-                                    <p>
+                                    <p v-for="seat in list.trainInfo.TrainSeat">
+                                        <span>{{seat.SeatName}}</span>
+                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
+                                    </p>
+                                    <!-- <p>
                                         <span>硬座</span>
                                         <a href="javascript:;" style="color:#fa0;">￥251</a>
                                     </p>
                                     <p>
                                         <span>硬座</span>
                                         <a href="javascript:;" style="color:#fa0;">￥251</a>
-                                    </p>
-                                    <p>
-                                        <span>硬座</span>
-                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
-                                    </p>
+                                    </p> -->
                                 </div>
                                 <div class="ticket_book">
-                                    <p>
-                                        <span>余
-                                            <mark>0</mark> 张</span>
-                                        <span>
-                                            <el-button size="mini" type="warning" disabled>预订</el-button>
-                                        </span>
-                                    </p>
-                                    <p>
-                                        <span>余
-                                            <mark>121</mark> 张</span>
-                                        <span>
-                                            <el-button size="mini" type="warning">预订</el-button>
-                                        </span>
-                                    </p>
-                                    <p>
-                                        <span>余
-                                            <mark>22</mark> 张</span>
-                                        <span>
-                                            <el-button size="mini" type="warning">预订</el-button>
-                                        </span>
-                                    </p>
                                     <p>
                                         <span>余
                                             <mark>0</mark> 张</span>
@@ -422,7 +398,20 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript">
+        // window.location.href = "http://train.hys.com";
+        // $.ajax({
+		// 	type:"POST",
+		// 	url:"http://train.hys.com/api/train/v1/index/dtCityPanel",
+		// 	success:function(data){
+		// 		alert(data);
+		// 	},
+		// 	error:function(){
+		// 		alert("error");
+		// 	}
+		// });
+        
         moment().format();
+        alert([[apiPath]])
         // function filter_search() {
         //     var data = {};
         //     data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
@@ -499,6 +488,17 @@
                             return time.getTime() < Date.now() - 8.64e7;
                         }
                     },
+                    depCityCode:'',
+					depCityName: '',
+					arrCityCode:'',
+					arrCityName: '',
+					cityInfo: [],
+					citys: [],
+					state4: '',
+					state5: '',
+					timeout: null,
+					high_train: false,
+                    // 
                     value1: '',
                     typeOk: false,
                     depTimeOk: false,
@@ -535,27 +535,107 @@
                     input4: '',
                     input5: '',
                     input6: '',
-                    lists: [{
-                            name: '12',
-                            age: '23'
-                        },
-                        {
-                            name: '112',
-                            age: '43'
-                        },
-                        {
-                            name: '11112',
-                            age: '13'
-                        },
-                        {
-                            name: '12333',
-                            age: '83'
-                        }
+                    lists: [
+
                     ]
                 }
             },
+            created: function () {
+                var that = this;
+				$.ajax({
+					type: "post",
+					url: apiPath + "list/train",
+					data: {
+						"date": "2017-12-01",
+						"from": "BJP",
+						"to": "SHH"
+					},
+					dataType: "JSON",
+					success: function (response) {
+                        var _that = that;
+                        _that.lists = response.data.trainInfos
+                        console.log(_that.lists)
+					}
+				});	
+			},
             methods: {
+                loadAll() {
+					
+					return [
 
+					];
+				},
+				querySearchAsyncDep(queryString, cb) {
+					this.citys = this.requireCity(queryString);
+					var citys = this.citys;
+					var results = queryString ? citys.filter(this.createStateFilterDep(queryString)) : citys;
+					clearTimeout(this.timeout);
+					
+					this.timeout = setTimeout(() => {
+						cb(results);
+					}, 300 * Math.random());
+				},
+				createStateFilterDep(queryString) {
+					return (state) => {
+						return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0||state.code.toLowerCase().indexOf(queryString.toLowerCase()) === 0||state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+					};
+				},
+				handleSelectDep(item) {
+					this.depCityCode = item.code;
+					this.depCityName = item.name;
+				},
+				querySearchAsyncArr(queryString, cb) {
+					this.citys = this.requireCity(queryString);
+					var citys = this.citys;
+					var results = queryString ? citys.filter(this.createStateFilterArr(queryString)) : citys;
+					clearTimeout(this.timeout);
+					
+					this.timeout = setTimeout(() => {
+						cb(results);
+					}, 300 * Math.random());
+				},
+				createStateFilterArr(queryString) {
+					
+					return (state) => {
+						return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0||state.code.toLowerCase().indexOf(queryString.toLowerCase()) === 0||state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+					};
+				},
+				handleSelectArr(item) {
+					this.arrCityCode = item.code;
+					this.arrCityName = item.name;
+					console.log(this.arrCityName);
+				},
+                city_change() {
+					let depCityCode = this.depCityCode;
+					let arrCityCode = this.arrCityCode; 
+					let depCityName = this.depCityName;
+					let arrCityName = this.arrCityName; 
+					let depCity = this.state4;
+					console.log(depCity)
+					this.depCityCode = arrCityCode;
+					this.depCityName = arrCityName;
+					this.arrCityCode = depCityCode;
+					this.arrCityName = depCityName;
+					this.state4 = this.state5;
+					this.state5 = depCity;
+				},
+				requireCity(str){
+					var that = this;
+					$.ajax({
+						type: "post",
+						url: "url",
+						data: str,
+						dataType: "json",
+						success: function (response) {
+							let cityInfo = response.data;
+							for (let index = 0; index < cityInfo.length; index++) {
+								cityInfo[index].value = cityInfo[index].name;
+							}
+							that.cityInfo = cityInfo;
+						}
+					});
+					return this.cityInfo;
+				},
                 handleCheckedTypeChange(value) {
                     console.log(value)
                     let checkedCount = value.length;
@@ -760,7 +840,10 @@
                         "left": left + "px"
                     }, 200);
                 }
-            }
+            },
+            mounted() {
+				this.citys = this.loadAll();
+			}
         }
         var Ctor = Vue.extend(train_query)
         new Ctor().$mount('#train_query')

@@ -17,7 +17,7 @@
   width: 776px;
   height: 100px;
   position: absolute;
-  top: 0px;
+  top: 20px;
   bottom: 0;
   right: 300px;
   -webkit-animation: 24s run infinite linear;
@@ -113,7 +113,8 @@
   100% {
     right: 300px; } }
 .train_run {
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
 
 .con_date {
   width: 100%;
