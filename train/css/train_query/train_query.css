@@ -533,7 +533,12 @@
   .passStation li > span:nth-of-type(1) {
     width: 10%; }
 
+.date_pick_box {
+  overflow: hidden; }
+
 .arrow_l {
+  position: relative;
+  z-index: 999;
   float: left;
   width: 3%;
   height: 76px;
@@ -545,6 +550,8 @@
   outline: none; }
 
 .arrow_r {
+  position: relative;
+  z-index: 999;
   float: right;
   width: 3%;
   height: 76px;
@@ -558,7 +565,6 @@
 #date_pick {
   float: left;
   position: relative;
-  overflow: hidden;
   width: 94%;
   height: 76px; }
   #date_pick .active {
@@ -567,6 +573,7 @@
     background: #fff; }
   #date_pick li {
     float: left;
+    position: relative;
     width: 14.2857142857%;
     background: #eee;
     padding: 10px 0; }

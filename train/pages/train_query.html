@@ -109,7 +109,7 @@
                     <div class="date_pick_box clearfix">
                             <button class="arrow_l"></button>
                         <ul id="date_pick" class="clearfix">
-                                <li v-for="item in dates"  :allDate=item.allDate @click="dateInfo">
+                                <li v-for="(item,$index) in dates"  :allDate=item.allDate @click="dateInfo($index)">
                                     <h3>{{item.date}}</h3>
                                     <h5>{{item.week}}</h5>
                                 </li>
@@ -519,8 +519,13 @@
                 
             },
             methods: {
-                dateInfo() {
+                dateInfo(index) {
                     $('#date_pick li').eq(2).addClass('active')
+                    // $(event.currentTarget).
+                    console.log(index)
+                    $('#date_pick li').css({
+                        "left": -$('#date_pick').width()/7*((index+1)%4)
+                    })
                     // let click_date = $(event.currentTarget).attr('allDate');
                     // let week = this.getMyDay(new Date(click_date));
                     // console.log(week)
