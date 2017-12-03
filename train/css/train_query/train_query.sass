@@ -325,6 +325,7 @@
   .train_info_left
     float: left
     width: 75%
+    min-width: 830px
     // border: 1px solid #ccc
   .train_info_right
     float: right
@@ -505,4 +506,82 @@
     float: left
     margin-right: 30px
     vertical-align: middle
-
+.passStationInfo
+  display: block
+  display: none
+  width: 100%
+  background: #F0F0F0
+  margin-top: 120px
+  max-height: 280px
+  overflow-y: scroll
+  overflow-x: hidden
+  .passStation_title
+    width: 100%
+    text-align: center
+    >span
+      float: left
+      width: 22.5%
+      line-height: 32px
+      font-size: 14px
+      color: #999
+    >span:nth-of-type(1)
+      width: 10%
+.passStation
+  li
+    width: 100%
+    text-align: center
+    >span
+      float: left
+      width: 22.5%
+      line-height: 30px
+      font-size: 14px
+      background: #F0F0F0
+      color: #999
+    >span:nth-of-type(1)
+      width: 10%   
+.arrow_l
+  float: left
+  width: 3%
+  height: 76px
+  background-image: url('../../img/trainQuery/ico/arrow_l.png')
+  background-repeat: no-repeat
+  background-position: center 13px
+  background-size: 30px 50px
+  background-color: #eee
+  outline: none
+.arrow_r
+  float: right
+  width: 3%
+  height: 76px
+  background-image: url('../../img/trainQuery/ico/arrow_r.png')
+  background-repeat: no-repeat
+  background-position: center 13px
+  background-size: 30px 50px
+  background-color: #eee
+  outline: none
+#date_pick
+  float: left
+  position: relative
+  overflow: hidden
+  width: 94%
+  height: 76px
+  .active
+    border-top: 5px solid #bf0000
+    padding-top: 5px
+    background: #fff
+  li
+    float: left
+    width: (100%/7)
+    background: #eee
+    padding: 10px 0
+    h3
+      color: #000
+      font-size: 20px
+      line-height: 32px
+      text-align: center
+      font-weight: 700
+    h5
+      color: #333
+      font-size: 14px
+      line-height: 24px
+      text-align: center
