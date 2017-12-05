@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/train_query/train_query.css">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/styles/common.css">
+    <link rel="stylesheet" href="/styles/train_query.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <title>车次预定</title>
+
+    <title>车次查询</title>
     <style media="screen">
         body {
             min-width: 1200px;
@@ -33,7 +32,6 @@
             display: inline-block;
         }
     </style>
-
 </head>
 
 <body>
@@ -106,17 +104,9 @@
             </div>
             <div id="train_info" class="clearfix">
                 <section class="train_info_left">
-                    <div class="date_pick_box clearfix">
-                            <button class="arrow_l"></button>
-                        <ul id="date_pick" class="clearfix">
-                                <li v-for="(item,$index) in dates"  :allDate=item.allDate @click="dateInfo($index)">
-                                    <h3>{{item.date}}</h3>
-                                    <h5>{{item.week}}</h5>
-                                </li>
-                            </ul>
-                        
-                        <button class="arrow_r"></button>
-                    </div>
+                    <section id="date_pick">
+
+                    </section>
                     <section class="train_screen">
                         <el-button @click="show3 = !show3" style="position:absolute;bottom:20px;right:10px;">更多条件</el-button>
                         <div class="transition-box clearfix">
@@ -147,14 +137,14 @@
                                         <span>出发车站：</span>
                                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkDepStationAll" @change="handleCheckDepStationAllChange" :disabled="depStationOk">不限</el-checkbox>
                                         <el-checkbox-group v-model="checkDepStation" @change="handleCheckedDepStationChange">
-                                            <el-checkbox v-for="station in depStation" :label="station" :key="station">{{station}}</el-checkbox>
+                                            <el-checkbox v-for="station in depStation" :label="station.stationCode" :key="station.stationName">{{station.stationName}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
                                     <div class="transition-box clearfix">
                                         <span>到达车站：</span>
                                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkArrStationAll" @change="handleCheckArrStationAllChange" :disabled="arrStationOk">不限</el-checkbox>
                                         <el-checkbox-group v-model="checkArrStation" @change="handleCheckedArrStationChange">
-                                            <el-checkbox v-for="station in arrStation" :label="station" :key="station">{{station}}</el-checkbox>
+                                            <el-checkbox v-for="station in arrStation" :label="station.stationName" :key="station.stationCode">{{station.stationName}}</el-checkbox>
                                         </el-checkbox-group>
                                     </div>
                                     <div class="transition-box clearfix">
@@ -178,38 +168,38 @@
                             <span> </span>
                         </div>
                         <ul>
-                            <li class="clearfix">
+                            <li class="clearfix" v-for="list in lists" :train_no="list.trainInfo.trainNo">
                                 <div>
-                                    <p>111</p>
+                                    <p class="train_code">{{list.trainInfo.trainCode}}</p>
                                     <p>
                                         <el-button size="mini" @click="passStation(1)">经停站</el-button>
                                     </p>
                                 </div>
                                 <div class="station_time">
-                                    <p>
-                                        <span class="train_dep_time">07:27</span>
+                                    <p v-if=list.fromStationType===1>
+                                        <span class="train_dep_time">{{list.trainInfo.startTime}}</span>
+                                    </p>
+                                    <p v-else>
+                                        <span class="train_pass_time">{{list.trainInfo.startTime}}</span>
                                     </p>
                                     <p>
-                                        <span class="train_pass_time">13:13</span>
-                                    </p>
-                                    <p>
-                                        <span class="train_arr_time">17:13
-                                            <a href="javascript:;" style="color:skyblue">+1</a>
+                                        <span class="train_arr_time">{{list.trainInfo.arriveTime}}
+                                            <a href="javascript:;" style="color:skyblue" v-if=list.trainInfo.arriveDays!=0>+{{list.trainInfo.arriveDays}}</a>
                                         </span>
                                     </p>
                                 </div>
                                 <div>
-                                    <p>北京西</p>
-                                    <p>广州</p>
+                                    <p :code="list.trainInfo.fromStationCode">{{list.trainInfo.fromStationName}}</p>
+                                    <p :code="list.trainInfo.toStationCode">{{list.trainInfo.toStationName}}</p>
                                 </div>
                                 <div>
                                     <p> </p>
-                                    <p>9小时46分</p>
+                                    <p>{{list.trainInfo.runTime}}</p>
                                 </div>
                                 <div>
-                                    <p>
-                                        <span>111</span>
-                                        <a href="javascript:;" style="color:#fa0;">￥251</a>
+                                    <p v-for="seat in list.trainInfo.TrainSeat">
+                                        <span>{{seat.SeatName}}</span>
+                                        <a href="javascript:;" style="color:#fa0;">￥{{seat.Price}}</a>
                                     </p>
                                     <!-- <p>
                                         <span>硬座</span>
@@ -221,52 +211,36 @@
                                     </p> -->
                                 </div>
                                 <div class="ticket_book">
-                                    <p>
+                                    <p v-for="seat in list.trainInfo.TrainSeat">
                                         <span>余
-                                            <mark>0</mark> 张</span>
-                                        <span>
-                                            <el-button size="mini" type="warning" disabled>预订</el-button>
+                                            <mark>{{seat.SeatNumber}}</mark> 张</span>
+                                        <span v-if=seat.SeatNumber===0>
+                                            <el-button size="mini" type="info" disabled>预订</el-button>
                                         </span>
-                                    </p>
-                                    <p>
-                                        <span>余
-                                            <mark>121</mark> 张</span>
-                                        <span>
-                                            <el-button size="mini" type="warning">预订</el-button>
-                                        </span>
-                                    </p>
-                                    <p>
-                                        <span>余
-                                            <mark>22</mark> 张</span>
-                                        <span>
+                                        <span v-else>
                                             <el-button size="mini" type="warning">预订</el-button>
                                         </span>
                                     </p>
                                 </div>
                                 <section class="passStationInfo">
-                                    <p class="passStation_title clearfix">
-                                        <span>&nbsp;</span>
-                                        <span>车站名</span>
-                                        <span>到达时间</span>
-                                        <span>发车时间</span>
-                                        <span>停留时间</span>
-                                    </p>
-                                    <ul class="passStation">
-                                        <li class="clearfix">
-                                            <span>1.</span>
-                                            <span>银川</span>
-                                            <span>--</span>
-                                            <span>17:18</span>
-                                            <span>--</span>
-                                        </li>
-                                        <li class="clearfix">
-                                            <span>2.</span>
-                                            <span>宁东</span>
-                                            <span>18:07</span>
-                                            <span>18:15</span>
-                                            <span>8分</span>
-                                        </li>
-                                    </ul>
+                                    <div v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+                                        <p class="passStation_title clearfix">
+                                            <span>&nbsp;</span>
+                                            <span>车站名</span>
+                                            <span>到达时间</span>
+                                            <span>发车时间</span>
+                                            <span>停留时间</span>
+                                        </p>
+                                        <ul class="passStation">
+                                            <li class="clearfix" v-for="item in passStations">
+                                                <span>{{item.ID}}</span>
+                                                <span>{{item.stationName}}</span>
+                                                <span>{{item.arriveTime}}</span>
+                                                <span>{{item.startTime}}</span>
+                                                <span>{{item.stopTime}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </section>
                             </li>
                         </ul>
@@ -299,87 +273,16 @@
         </div>
 
     </div>
-    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="../js/moment.js"></script>
+    <script type="text/javascript" th:src="|${_staticPath}/libs/jquery-1.11.2/jquery.min.js|"></script>
     <!-- 引入 Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript">
-        // window.location.href = "http://train.hys.com";
-        // $.ajax({
-        // 	type:"POST",
-        // 	url:"http://train.hys.com/api/train/v1/index/dtCityPanel",
-        // 	success:function(data){
-        // 		alert(data);
-        // 	},
-        // 	error:function(){
-        // 		alert("error");
-        // 	}
-        // });
+        var staticPath = "[[${_staticPath}]]";
+        var dynamicPath = "[[${_dynamicPath}]]";
+        var apiPath = "[[${_apiPath}]]" + "/train/v1";
 
-        moment().format();
-        // function filter_search() {
-        //     var data = {};
-        //     data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
-        //     data.ToCode = $("#" + 'ctl00_ContentPlaceHolder1_title_toCode').val();
-        //     data.trainType = $("#Train_type .filter_option.on").attr("filter_val");
-        //     data.FilterStartTime = $("#from_time .filter_option.on").attr("filter_val");
-        //     data.FilterArriveTime = $("#to_time .filter_option.on").attr("filter_val");
-
-        //     data.Time = $("#DaysList li.on").attr("day_val");
-        //     // var url = "ajaxFile/TrainsHelper.ashx";
-        //     data.action = "TrainsList";
-        //     $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html("");
-        //     $("#hotel_list_login").show();
-        //     // console.log(data);
-        //     $.ajax(url, {
-        //         type: "post",
-        //         async: true,
-        //         data: data,
-        //         success: function (data) {
-        //             $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html(data);
-        //             $("#hotel_list_login").hide();
-        //             $(".con_datas .con_data").hover(function () {
-        //                 $(this).addClass("on")
-        //                 $(this).find(".fromtime").animate({
-        //                     "font-size": "30px"
-        //                 }, 150);
-        //             }, function () {
-        //                 $(this).removeClass("on")
-        //                 $(this).find(".fromtime").animate({
-        //                     "font-size": "25px"
-        //                 }, 150);
-        //             })
-        //         },
-        //         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //             $("#hotel_list_login").hide();
-        //         }
-        //     });
-        // }
-
-
-
-
-        // $("#DaysList li").on("click", function () {
-
-        // })
-        // $(".con_date .click_l").on("click", function () {
-        //     var left = parseInt($("#DaysList").css("left").replace("px", ""));
-        //     left = (left + 700) < 50 ? (left + 700) : 50;
-        //     console.log(left);
-        //     $("#DaysList").animate({
-        //         "left": left + "px"
-        //     }, 200);
-        // })
-        // $(".con_date .click_r").on("click", function () {
-        //     var left = parseInt($("#DaysList").css("left").replace("px", ""));
-        //     left = (left - 700) > -2250 ? (left - 700) : -2250;
-        //     console.log(left);
-        //     $("#DaysList").animate({
-        //         "left": left + "px"
-        //     }, 200);
-        // })
         const trainTypeArr = ['G 高铁 / D 动车 / C 城际', '快车（Z / T / K）', 'L临客 / 普快'];
         const depTimeArr = ['00:00-06:00', '06:00-12:00', '12:00-18:00', '2:00-18:00'];
         const arrTimeArr = ['00:00-06:00', '06:00-12:00', '12:00-18:00', '2:00-18:00'];
@@ -428,95 +331,81 @@
                     trainType: trainTypeArr,
                     depTime: depTimeArr,
                     arrTime: arrTimeArr,
-                    depStation: depStationArr,
-                    arrStation: arrStationArr,
+                    depStation: '',
+                    arrStation: '',
+                    depStationCode: '',
+                    arrStationCode: '',
                     fromPassing: fromPassingArr,
+                    trainTypeNo: '',
+                    passStations: '',
                     isIndeterminate: false,
                     nowDate: '2017-11-27',
                     dates: '',
                     // 
                     show3: false,
+                    loading: true,
                     input1: '',
                     input2: '',
                     input3: '',
                     input4: '',
                     input5: '',
                     input6: '',
-                    lists: [{}],
-                    dates: [{
-                            'date': '12-04',
-                            'allDate': '2017-12-04',
+                    searchDate: '',
+                    fromStation: '',
+                    toStation: '',
+                    lists: [{
+                            name: '12',
+                            age: '23'
                         },
                         {
-                            'date': '12-05',
-                            'allDate': '2017-12-05',
+                            name: '112',
+                            age: '43'
                         },
                         {
-                            'date': '12-06',
-                            'allDate': '2017-12-06',
+                            name: '11112',
+                            age: '13'
                         },
                         {
-                            'date': '12-07',
-                            'allDate': '2017-12-07',
-                        },
-                        {
-                            'date': '12-08',
-                            'allDate': '2017-12-08',
-                        },
-                        {
-                            'date': '12-09',
-                            'allDate': '2017-12-09',
-                        },
-                        {
-                            'date': '12-10',
-                            'allDate': '2017-12-10',
-                        },
-                        {
-                            'date': '12-11',
-                            'allDate': '2017-12-11',
-                        },
-                        {
-                            'date': '12-12',
-                            'allDate': '2017-12-12',
-                        },
-                        {
-                            'date': '12-13',
-                            'allDate': '2017-12-13',
-                        },
-                        {
-                            'date': '12-14',
-                            'allDate': '2017-12-14',
-                        },
-                        {
-                            'date': '12-15',
-                            'allDate': '2017-12-15',
+                            name: '12333',
+                            age: '83'
                         }
                     ]
                 }
             },
             created: function () {
-                for (let index = 0; index < this.dates.length; index++) {
-                        let w = this.getMyDay(new Date(this.dates[index].allDate));
-                     
-                        this.dates[index].week = w;
+                this.searchDate = location.href.substr(location.href.indexOf("2"), 10);
+                this.fromStation = location.href.substr(location.href.indexOf("2") + 11, 3);
+                this.toStation = location.href.split("/")[6].substr(0, 3);
+                var that = this;
+                $.ajax({
+                    type: "post",
+                    url: apiPath + "/list/train",
+                    data: {
+                        "date": this.searchDate,
+                        "from": this.fromStation,
+                        "to": this.toStation
+                    },
+                    dataType: "JSON",
+                    success: function (response) {
+                        console.log(response)
+                        var _that = that;
+                        var depStation = [];
+                        var depStationCode = [];
+                        var arrStation = [];
+                        var arrStationCode = [];
+                        _that.lists = response.data.trainInfos
+                        for (let index = 0; index < response.data.departStations.length; index++) {
+                            depStation.push({'stationName':response.data.departStations[index].stationName,'stationCode':response.data.departStations[index].stationCode});
+                        };
+                        for (let index = 0; index < response.data.arriveStations.length; index++) {
+                        	arrStation.push({'stationName':response.data.arriveStations[index].stationName,'stationCode':response.data.arriveStations[index].stationCode});
+                        }
+                        console.log(depStation)
+                        _that.depStation = depStation;
+                        _that.arrStation = arrStation;
                     }
-                // var that = this;
-            	// $.ajax({
-            	// 	type: "post",
-            	// 	url: apiPath + "list/train",
-            	// 	data: {
-            	// 		"date": "2017-12-01",
-            	// 		"from": "BJP",
-            	// 		"to": "SHH"
-            	// 	},
-            	// 	dataType: "JSON",
-            	// 	success: function (response) {
-                //         var _that = that;
-                //         _that.lists = response.data.trainInfos
-                //         console.log(_that.lists)
-            	// 	}
-            	// });	
-                
+                });
+
             },
             methods: {
                 dateInfo(index) {
@@ -524,36 +413,46 @@
                     // $(event.currentTarget).
                     console.log(index)
                     $('#date_pick li').css({
-                        "left": -$('#date_pick').width()/7*((index+1)%4)
+                        "left": -$('#date_pick').width() / 7 * ((index + 1) % 4)
                     })
                     // let click_date = $(event.currentTarget).attr('allDate');
                     // let week = this.getMyDay(new Date(click_date));
                     // console.log(week)
-                    
+
                     // console.log($(event.currentTarget).text(),w1)
                 },
                 passStation(index) {
-                    console.log()
+                    let trainCode = $(event.currentTarget).parent().prev().text();
+                    let trainNo = $(event.currentTarget).parents('li').attr('train_no');
+                    $('.passStationInfo').hide();
+                    this.passStations = '';
+                    this.loading = true;
+                    let that = this;
+                    $.ajax({
+                        type: "post",
+                        url: apiPath + "/list/passStation",
+                        data: {
+                            "trainCode": trainCode,
+                            "trainNo": trainNo,
+                            "startTime": that.searchDate,
+                            "fromCode": that.fromStation,
+                            "toCode": that.toStation
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            that.passStations = response.data.passStations;
+                            console.log(that.passStations)
+                            that.loading = false;
+                        }
+                    });
+
                     $(event.currentTarget).parents('li').children('section').toggle();
-                    // let trainCode = $(event.currentTarget).parents('li').children('.trainCode').text()
                 },
                 loadAll() {
 
                     return [
 
                     ];
-                },
-                //星期处理
-                getMyDay(date) {
-                    let week;
-                    if (date.getDay() == 0) week = "周日"
-                    if (date.getDay() == 1) week = "周一"
-                    if (date.getDay() == 2) week = "周二"
-                    if (date.getDay() == 3) week = "周三"
-                    if (date.getDay() == 4) week = "周四"
-                    if (date.getDay() == 5) week = "周五"
-                    if (date.getDay() == 6) week = "周六"
-                    return week;
                 },
                 querySearchAsyncDep(queryString, cb) {
                     this.citys = this.requireCity(queryString);
@@ -617,21 +516,25 @@
                     var that = this;
                     $.ajax({
                         type: "post",
-                        url: "url",
-                        data: str,
+                        url: apiPath + "/index/dtCityFuzzyMatching",
+                        data: {
+                            "fuzzyWord": str
+                        },
                         dataType: "json",
                         success: function (response) {
+                            that.cityInfo = [];
                             let cityInfo = response.data;
                             for (let index = 0; index < cityInfo.length; index++) {
                                 cityInfo[index].value = cityInfo[index].name;
                             }
                             that.cityInfo = cityInfo;
+                            console.log(response)
                         }
                     });
                     return this.cityInfo;
                 },
                 handleCheckedTypeChange(value) {
-                    console.log(value)
+
                     let checkedCount = value.length;
                     this.checkTypeAll = false
                     if (checkedCount == 0) {
@@ -643,7 +546,6 @@
                     this.isIndeterminate = false;
                 },
                 handleCheckTypeAllChange(val) {
-                    console.log(val)
                     this.checkType = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkTypeAll) {
@@ -651,7 +553,20 @@
                     }
                 },
                 handleCheckedTypeChange(value) {
-                    console.log(value)
+                    switch (value[value.length - 1]) {
+                        case 'G 高铁 / D 动车 / C 城际':
+                            this.trainTypeNo = 1;
+                            break;
+                        case '快车（Z / T / K）':
+                            this.trainTypeNo = 2;
+                            break;
+                        case 'L临客 / 普快':
+                            this.trainTypeNo = 3;
+                            break;
+                        default:
+                            break;
+                    }
+                    console.log(this.trainTypeNo)
                     let checkedCount = value.length;
                     this.checkTypeAll = false
                     if (checkedCount == 0) {
@@ -661,9 +576,26 @@
                         this.typeOk = false
                     }
                     this.isIndeterminate = false;
+                    var that = this;
+                    $.ajax({
+                        type: "post",
+                        url: apiPath + "/list/train",
+                        data: {
+                            "date": "2017-12-06",
+                            "from": "BJP",
+                            "to": "SHH",
+                            "trainType": that.trainTypeNo,
+                        },
+                        dataType: "JSON",
+                        success: function (response) {
+                            var _that = that;
+                            console.log(that.lists)
+                            _that.lists = response.data.trainInfos
+                            console.log(_that.lists)
+                        }
+                    });
                 },
                 handleCheckDepTimeAllChange(val) {
-                    console.log(val)
                     this.checkDepTime = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkDepTimeAll) {
@@ -672,7 +604,6 @@
 
                 },
                 handleCheckedDepTimeChange(value) {
-                    console.log(value)
                     let checkedCount = value.length;
                     this.checkDepTimeAll = false
                     if (checkedCount == 0) {
@@ -684,7 +615,6 @@
                     this.isIndeterminate = false;
                 },
                 handleCheckArrTimeAllChange(val) {
-                    console.log(val)
                     this.checkArrTime = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkArrTimeAll) {
@@ -693,7 +623,6 @@
 
                 },
                 handleCheckedArrTimeChange(value) {
-                    console.log(value)
                     let checkedCount = value.length;
                     this.checkArrTimeAll = false
                     if (checkedCount == 0) {
@@ -706,7 +635,6 @@
                 },
 
                 handleCheckDepStationAllChange(val) {
-                    console.log(val)
                     this.checkDepStation = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkDepStationAll) {
@@ -715,7 +643,7 @@
 
                 },
                 handleCheckedDepStationChange(value) {
-                    console.log(value)
+                	console.log(value)
                     let checkedCount = value.length;
                     this.checkDepStationAll = false
                     if (checkedCount == 0) {
@@ -727,7 +655,6 @@
                     this.isIndeterminate = false;
                 },
                 handleCheckArrStationAllChange(val) {
-                    console.log(val)
                     this.checkArrStation = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkArrStationAll) {
@@ -736,7 +663,6 @@
 
                 },
                 handleCheckedArrStationChange(value) {
-                    console.log(value)
                     let checkedCount = value.length;
                     this.checkArrStationAll = false
                     if (checkedCount == 0) {
@@ -748,7 +674,6 @@
                     this.isIndeterminate = false;
                 },
                 handleCheckFromPassingAllChange(val) {
-                    console.log(val)
                     this.checkFromPassing = val ? [] : [];
                     this.isIndeterminate = false
                     if (this.checkFromPassingAll) {
@@ -757,7 +682,6 @@
 
                 },
                 handleCheckedFromPassingChange(value) {
-                    console.log(value)
                     let checkedCount = value.length;
                     this.checkFromPassingAll = false
                     if (checkedCount == 0) {
@@ -768,8 +692,75 @@
                     }
                     this.isIndeterminate = false;
                 },
+                filter_search() {
+                    var data = {};
+                    data.FromCode = $("#" + 'ctl00_ContentPlaceHolder1_title_fromCode').val();
+                    data.ToCode = $("#" + 'ctl00_ContentPlaceHolder1_title_toCode').val();
+                    data.trainType = $("#Train_type .filter_option.on").attr("filter_val");
+                    data.FilterStartTime = $("#from_time .filter_option.on").attr("filter_val");
+                    data.FilterArriveTime = $("#to_time .filter_option.on").attr("filter_val");
 
-
+                    data.Time = $("#DaysList li.on").attr("day_val");
+                    // var url = "ajaxFile/TrainsHelper.ashx";
+                    data.action = "TrainsList";
+                    $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html("");
+                    $("#hotel_list_login").show();
+                    // console.log(data);
+                    $.ajax(url, {
+                        type: "post",
+                        async: true,
+                        data: data,
+                        success: function (data) {
+                            $("#" + 'ctl00_ContentPlaceHolder1_TrainsListBox').html(data);
+                            $("#hotel_list_login").hide();
+                            $(".con_datas .con_data").hover(function () {
+                                $(this).addClass("on")
+                                $(this).find(".fromtime").animate({
+                                    "font-size": "30px"
+                                }, 150);
+                            }, function () {
+                                $(this).removeClass("on")
+                                $(this).find(".fromtime").animate({
+                                    "font-size": "25px"
+                                }, 150);
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            $("#hotel_list_login").hide();
+                        }
+                    });
+                },
+                click_li() {
+                    if (!$(this).hasClass("on")) {
+                        $(this).addClass("on").siblings().removeClass("on");
+                    }
+                    var on_index = $("#DaysList li.on").index();
+                    var from = (on_index - 3) <= 0 ? 0 : (on_index - 3);
+                    from = from > 23 ? 23 : from;
+                    $("#DaysList").animate({
+                        "left": -((from * 100) - 50) + "px"
+                    }, 200);
+                    this.filter_search();
+                },
+                click_l() {
+                    var left = parseInt($("#DaysList").css("left").replace("px", ""));
+                    left = (left + 700) < 50 ? (left + 700) : 50;
+                    console.log(left);
+                    $("#DaysList").animate({
+                        "left": left + "px"
+                    }, 200);
+                },
+                click_r() {
+                    var left = parseInt($("#DaysList").css("left").replace("px", ""));
+                    left = (left - 700) > -2250 ? (left - 700) : -2250;
+                    console.log(left);
+                    $("#DaysList").animate({
+                        "left": left + "px"
+                    }, 200);
+                },
+                train_filter(cond) {
+                    console.log(cond)
+                }
             },
             mounted() {
                 this.citys = this.loadAll();
@@ -777,32 +768,66 @@
         }
         var Ctor = Vue.extend(train_query)
         new Ctor().$mount('#train_query')
+        
+//         {
+//   "data": {
+//     "trainInfo": {
+//       "TrainSeat": [
+//         {
+//           "Price": 0,
+//           "SeatCode": "string",
+//           "SeatName": "string",
+//           "SeatNumber": 0
+//         }
+//       ],
+//       "arriveDays": "string",
+//       "arriveTime": "string",
+//       "canBuyNow": "string",
+//       "endStationName": "string",
+//       "fromStationCode": "string",
+//       "fromStationName": "string",
+//       "runTime": "string",
+//       "runTimeMinute": "string",
+//       "saleDateTime": "string",
+//       "startStationName": "string",
+//       "startTime": "string",
+//       "toStationCode": "string",
+//       "toStationName": "string",
+//       "trainCode": "string",
+//       "trainNo": "string",
+//       "trainStartDate": "2017-12-05",
+//       "trainType": "string"
+//     },
+//     "trainSeat": {
+//       "Price": 0,
+//       "SeatCode": "string",
+//       "SeatName": "string",
+//       "SeatNumber": 0
+//     }
+//   },
+//   "message": "string",
+//   "success": true
+// }
 
-        // var train_lists = {
-        //     data() {
-        //         return {
-        //             lists: [{
-        //                     name: '12',
-        //                     age: '23'
-        //                 },
-        //                 {
-        //                     name: '112',
-        //                     age: '43'
-        //                 },
-        //                 {
-        //                     name: '11112',
-        //                     age: '13'
-        //                 },
-        //                 {
-        //                     name: '12333',
-        //                     age: '83'
-        //                 }
-        //             ]
-        //         }
-        //     }
-        // }
-        // var Ctor = Vue.extend(train_lists)
-        // new Ctor().$mount('#train_lists')
+//传 
+// trainNo	
+
+// seatCode
+
+//submit
+// contact.contactName	
+
+// contact.contactNumber	
+
+// passengers[0].passengerName	
+
+// passengers[0].cardType	
+
+// passengers[0].cardNo	
+
+// trainNo	
+
+// seatCode
     </script>
 </body>
 
