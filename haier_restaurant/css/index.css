@@ -1,0 +1,12 @@
+.content {
+  width: 100%; }
+  .content .header_search {
+    background: skyblue;
+    width: 100%;
+    height: 60px; }
+    .content .header_search > .el-select {
+      width: 60%;
+      margin-left: 20px;
+      vertical-align: bottom; }
+
+/*# sourceMappingURL=index.css.map */
