@@ -28,6 +28,9 @@
       width: 100%;
       height: 150px;
   }
+  /* ::-webkit-scrollbar {
+opacity: 0;
+} */
     </style>
     <title>智慧餐厅</title>
 </head>
@@ -52,16 +55,37 @@
                     </el-carousel>
                   </div>
             <ul class="rest_list">
-                 <li></li>
+                 <li v-for="list in restLists" class="clearfix">
+                    <div class="rest_pic">
+                        <img :src=list.img alt="餐厅照片">
+                    </div>
+                    <div class="rest_text">
+                        <h4>{{list.name}}</h4>
+                        <p>{{list.comp}}</p>
+                    </div>
+                    <div class="rest_collect">
+                        <span></span>
+                    </div>
+                 </li>
             </ul>
         </div>
+        <footer id="footer">
+                <nav id="footer_nav" class="clearfix">
+                    <a></a>
+                    <a></a>
+                    <a></a>
+                    <a></a>
+                </nav>
+            </footer>
     </div>
+   
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <!-- 引入 Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script>
+        document.body.addEventListener('touchstart', function () {});  
         var Main = {
             data() {
                 return {
@@ -84,6 +108,48 @@
                         'img/index/banner_2.jpg',
                         'img/index/banner_3.jpg',
                         'img/index/banner_4.jpg'
+                    ],
+                    restLists: [
+                        {
+                            name: '青岛家用空调餐厅',
+                            img: 'img/index/rest_1.jpg',
+                            comp: '青岛健利源营养配餐管理有限公司'
+                        }, {
+                            name: '创牌南-信息园GO',
+                            img: 'img/index/rest_2.jpg',
+                            comp: '深圳市都乐门餐饮实业有限公司'                            
+                        }, {
+                            name: '青岛创牌北餐厅',
+                            img: 'img/index/rest_3.jpg',
+                            comp: '安徽蜀王美心餐饮管理有限责任公司'
+                        }, {
+                            name: '创牌北-通讯餐厅',
+                            img: 'img/index/rest_4.jpg',
+                            comp: '北京快可立餐饮管理有限公司'
+                        }, {
+                            name: '青岛创牌南餐厅',
+                            img: 'img/index/rest_5.jpg',
+                            comp: '大连雨禾企业服务有限公司'
+                        }, {
+                            name: '青岛平板二期餐厅',
+                            img: 'img/index/rest_6.jpg',
+                            comp: '北京为之味餐饮有限公司'
+                        },
+                        {
+                            name: '青岛平板三期餐厅',
+                            img: 'img/index/rest_7.jpg',
+                            comp: '青岛好一家餐饮有限公司'
+                        },
+                        {
+                            name: '青岛平板四期餐厅',
+                            img: 'img/index/rest_8.jpg',
+                            comp: '国际天食集团有限公司'
+                        },
+                        {
+                            name: '青岛平板五期餐厅',
+                            img: 'img/index/rest_9.jpg',
+                            comp: '长沙一品佳餐饮管理有限公司'
+                        }
                     ]
                 }
             },
