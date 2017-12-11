@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        /* 适配iPhoneX底部导航条 */
+
+        @media only screen and (device-width: 375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) {
+            #app_index {
+                padding-bottom: 34px;
+            }
+        }
+        
+        .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 150px;
+    margin: 0;
+  }
+  .el-carousel__item h3 img {
+      width: 100%;
+      height: 150px;
+  }
+    </style>
+    <title>智慧餐厅</title>
+</head>
+
+<body>
+    <div id="app_index">
+        <div class="content">
+            <div class="header_search">
+                <el-select v-model="restName" placeholder="请选择就餐餐厅" size="large">
+                    <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
+                        <span style="float: left">{{ item.label }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                    </el-option>
+                </el-select>
+                <el-button type="primary" icon="el-icon-star-on" style="background: #FF6A6A;height: 40px;border: none;margin-top: 10px;" @click="showMyRest($event)">我的最爱</el-button>
+            </div>
+            <div class="exhibition">
+                    <el-carousel trigger="click" height="150px" arrow="nerver"> 
+                      <el-carousel-item v-for="img in imgs" :key="img" arrow="nerver">
+                        <h3><img :src=img alt=""></h3>
+                      </el-carousel-item>
+                    </el-carousel>
+                  </div>
+            <ul class="rest_list">
+                 <li></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <!-- 引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+        var Main = {
+            data() {
+                return {
+                    cities: [{
+                        label: '青岛家用空调餐厅'
+                    }, {
+                        label: '创牌南-信息园GO'
+                    }, {
+                        label: '青岛创牌北餐厅'
+                    }, {
+                        label: '创牌北-通讯餐厅'
+                    }, {
+                        label: '青岛创牌南餐厅'
+                    }, {
+                        label: '青岛平板二期餐厅'
+                    }],
+                    restName: '',
+                    imgs: [
+                        'img/index/banner_1.jpg',
+                        'img/index/banner_2.jpg',
+                        'img/index/banner_3.jpg',
+                        'img/index/banner_4.jpg'
+                    ]
+                }
+            },
+            methods: {
+                showMyRest(){
+                    if($(event.currentTarget).children('i').attr('class')=='el-icon-star-on'){
+                        $(event.currentTarget).children('i').removeClass().addClass('el-icon-star-off')
+                    } else {
+                        $(event.currentTarget).children('i').removeClass().addClass('el-icon-star-on')
+                    }
+                }
+            }
+        }
+        var Ctor = Vue.extend(Main)
+        new Ctor().$mount('#app_index')
+    </script>
+</body>
+
+</html>
